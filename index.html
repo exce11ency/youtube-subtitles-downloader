@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Subtitle Downloader</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        /* Custom scrollbar for subtitle display area */
+        .subtitle-results::-webkit-scrollbar {
+            width: 8px;
+        }
+        .subtitle-results::-webkit-scrollbar-track {
+            background: #e5e7eb; /* Lighter gray */
+            border-radius: 4px;
+        }
+        .subtitle-results::-webkit-scrollbar-thumb {
+            background: #9ca3af; /* Medium gray */
+            border-radius: 4px;
+        }
+        .subtitle-results::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* Darker gray */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 bg-gray-100">
+    <div class="w-full max-w-2xl bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">YouTube Subtitle Downloader</h1>
+
+        <div class="mb-6">
+            <label for="youtubeUrl" class="block text-sm font-medium text-gray-700 mb-2">
+                Enter YouTube Video URL:
+            </label>
+            <input
+                type="url"
+                id="youtubeUrl"
+                placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ or https://youtube.com/shorts/AbCdEfGhIjK"
+                class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-400"
+                value="https://www.youtube.com/watch?v=M7FIJf5C8tQ" <!-- Example URL for quick testing -->
+            >
+        </div>
+
+        <button
+            id="fetchSubtitlesBtn"
+            class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-105"
+        >
+            <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            Fetch Subtitles
+        </button>
+
+        <div id="loadingIndicator" class="hidden text-center text-indigo-600 font-medium mt-6">
+            Loading available subtitles...
+        </div>
+
+        <div id="errorDisplay" class="hidden mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+            <strong class="font-bold">Error:</strong>
+            <span class="block sm:inline" id="errorMessage"></span>
+        </div>
+
+        <div id="subtitleResults" class="mt-8 pt-6 border-t border-gray-200 hidden">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Available Subtitles:</h2>
+            <div id="subtitleList" class="space-y-4 max-h-80 overflow-y-auto pr-2 subtitle-results">
+                <!-- Subtitle options will be populated here -->
+            </div>
+            <p id="noSubtitlesMessage" class="hidden text-gray-600 mt-4 text-center">
+                No subtitles found for this video, or they are not publicly available.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const youtubeUrlInput = document.getElementById('youtubeUrl');
+            const fetchSubtitlesBtn = document.getElementById('fetchSubtitlesBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const errorDisplay = document.getElementById('errorDisplay');
+            const errorMessage = document.getElementById('errorMessage');
+            const subtitleResultsDiv = document.getElementById('subtitleResults');
+            const subtitleList = document.getElementById('subtitleList');
+            const noSubtitlesMessage = document.getElementById('noSubtitlesMessage');
+
+            // Function to show error message
+            function showErrorMessage(message) {
+                errorMessage.textContent = message;
+                errorDisplay.classList.remove('hidden');
+            }
+
+            // Function to hide error message
+            function hideErrorMessage() {
+                errorDisplay.classList.add('hidden');
+                errorMessage.textContent = '';
+            }
+
+            // Function to extract YouTube video ID from URL
+            function getYouTubeVideoId(url) {
+                // Regex updated to cover standard YouTube URLs, short YouTube URLs (youtu.be),
+                // and YouTube Shorts URLs.
+                const regExp = /(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtube\.com|youtu\.be)(?:\/watch\?v=|\/embed\/|\/v\/|\/shorts\/|)([\w-]{11})(?:\S+)?/;
+                const match = url.match(regExp);
+                return (match && match[1] && match[1].length === 11) ? match[1] : null;
+            }
+
+            // Event listener for the fetch button
+            fetchSubtitlesBtn.addEventListener('click', async () => {
+                hideErrorMessage();
+                subtitleResultsDiv.classList.add('hidden');
+                subtitleList.innerHTML = ''; // Clear previous results
+                noSubtitlesMessage.classList.add('hidden');
+                loadingIndicator.classList.remove('hidden'); // Show loading indicator
+
+                const youtubeUrl = youtubeUrlInput.value.trim();
+                const videoId = getYouTubeVideoId(youtubeUrl);
+
+                if (!videoId) {
+                    showErrorMessage('Please enter a valid YouTube video URL.');
+                    loadingIndicator.classList.add('hidden');
+                    return;
+                }
+
+                // --- ACTUAL BACKEND INTEGRATION ---
+                // This is where we call our Flask backend.
+                const backendApiUrl = `/api/fetch_subtitles`; // Relative path to our Flask app
+
+                try {
+                    const response = await fetch(backendApiUrl, {
+                        method: 'POST', // We use POST as defined in app.py
+                        headers: {
+                            'Content-Type': 'application/json' // Tell the server we are sending JSON
+                        },
+                        body: JSON.stringify({ videoId: videoId }) // Send videoId in JSON format
+                    });
+
+                    // Check if the response was successful
+                    if (!response.ok) {
+                        const errorData = await response.json(); // Try to parse error message from backend
+                        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json(); // Parse the JSON response from the backend
+
+                    if (data.success && data.subtitles.length > 0) {
+                        data.subtitles.forEach(sub => {
+                            const subtitleItem = document.createElement('div');
+                            subtitleItem.className = 'flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-200';
+                            subtitleItem.innerHTML = `
+                                <span class="text-gray-800 font-medium mb-2 sm:mb-0">${sub.name} (${sub.lang.toUpperCase()}${sub.is_auto_generated ? ' - Auto' : ''})</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <a href="/api/download_subtitle?videoId=${videoId}&lang=${sub.lang}&format=txt"
+                                       class="px-3 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out flex items-center text-sm">
+                                        TXT
+                                    </a>
+                                    <a href="/api/download_subtitle?videoId=${videoId}&lang=${sub.lang}&format=srt"
+                                       class="px-3 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out flex items-center text-sm">
+                                        SRT
+                                    </a>
+                                </div>
+                            `;
+                            subtitleList.appendChild(subtitleItem);
+                        });
+                        subtitleResultsDiv.classList.remove('hidden');
+                    } else {
+                        noSubtitlesMessage.classList.remove('hidden');
+                        subtitleResultsDiv.classList.remove('hidden'); // Show the results div even if no subtitles
+                    }
+                } catch (error) {
+                    console.error('Error fetching subtitles:', error);
+                    showErrorMessage(`Error: ${error.message || 'Could not fetch subtitles. Please check the URL or try again later.'}`);
+                } finally {
+                    loadingIndicator.classList.add('hidden'); // Hide loading indicator
+                }
+            });
+        });
+    </script>
+</body>
+</html>

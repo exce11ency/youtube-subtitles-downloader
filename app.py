@@ -217,25 +217,3 @@ def download_subtitle():
 if __name__ == '__main__':
     # Run the Flask app in debug mode. In production, you would use a production-ready WSGI server.
     app.run(debug=True)
-```
-**Changes in `app.py`:**
-
-* **`data = request.get_json(silent=True)`**: Added `silent=True` to `get_json()`. This prevents an error if the request body is not valid JSON, instead returning `None`.
-* **Debugging Prints**: Added `print(f"Received data type: {type(data)}")` and `print(f"Received data: {data}")` after `request.get_json()`. These will output the type and content of the received data to your Render logs, which will be crucial for debugging.
-* **Type Validation**: Added `if not isinstance(data, dict):` to explicitly check if `data` is a dictionary. If it's not, it will return a more informative error message to the frontend, preventing the `'list' object has no attribute 'get'` crash.
-
-**Next Steps for you:**
-
-1.  **Save the updated `app.py`**: Make sure your local `app.py` file is updated with this new content.
-2.  **Commit and Push to GitHub**:
-    Open your terminal in your project folder and run:
-    ```bash
-    git add .
-    git commit -m "Add debugging and robust type checking for request data"
-    git push origin main
-    ```
-3.  **Render will automatically redeploy**: Once the new commit is on GitHub, Render.com should detect the change and start a new deployment. Monitor the logs on Render.com to ensure this deployment completes successfully (status "Live").
-
-After the deployment, **the most crucial step** remains: **you must provide working proxy addresses in the `PROXIES_LIST` environment variable on Render.com**. If this variable is empty or contains non-working proxies, the YouTube blocking error will persist.
-
-Once your service is "Live" again after this fix and you have a `PROXIES_LIST` set with working proxies, try fetching subtitles from your deployed service at `https://sub-dl-1tzt.onrender.com`. Then, check the Render logs again to see the output of the new `print` statements and any new erro

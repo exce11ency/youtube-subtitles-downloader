@@ -1,14 +1,12 @@
 # Import necessary modules from Flask for creating the web application and handling requests.
 from flask import Flask, request, jsonify, render_template, send_file
 # Import YouTubeTranscriptApi for fetching subtitles.
-# Removed NoLanguagesFound as it might not be directly importable from the top-level package in some versions.
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
 # Import os for reading environment variables.
 import os
 # Import io for handling in-memory files (important for sending text files without saving to disk).
 import io
 # Import requests to potentially use for proxy configuration if youtube_transcript_api needs it directly.
-# While youtube_transcript_api handles proxies internally, having requests available is good for general HTTP.
 import requests
 
 # Initialize the Flask application.
@@ -18,33 +16,13 @@ app = Flask(__name__, static_folder='.', template_folder='.')
 
 # --- Proxy Configuration ---
 # Read proxy settings from environment variables.
-# This makes it easy to change proxies without modifying code and keeps them secure.
 # PROXIES_LIST should be a comma-separated string of proxy URLs (e.g., "http://user:pass@ip:port,http://ip2:port2").
-# For now, we'll use an empty list if not set, meaning no proxies will be used by default.
-# You will set this variable on Render.com.
+# For now, we'll use an empty list if not set.
 PROXIES_LIST = os.getenv('PROXIES_LIST', '').split(',')
-# Clean up any empty strings from the split
-PROXIES_LIST = [p.strip() for p in PROXIES_LIST if p.strip()]
+# Clean up any empty strings from the split and ensure they are valid.
+# The youtube-transcript-api library expects a list of simple proxy strings.
+PROXIES_URLS_CLEANED = [p.strip() for p in PROXIES_LIST if p.strip()]
 
-# A simple way to rotate proxies (for demonstration). In a real app, you might use a more robust queue.
-current_proxy_index = 0
-
-def get_next_proxy():
-    """
-    Cycles through the list of proxies.
-    Returns a dictionary formatted for requests (or youtube_transcript_api's proxy setting).
-    """
-    global current_proxy_index
-    if not PROXIES_LIST:
-        return None # No proxies configured
-    
-    proxy_url = PROXIES_LIST[current_proxy_index % len(PROXIES_LIST)]
-    current_proxy_index += 1
-    
-    # youtube_transcript_api expects proxies in this format for its 'proxies' parameter:
-    # {'http': 'http://your_proxy', 'https': 'https://your_proxy'}
-    # Or for a single proxy string in an array for `get_transcript` function directly.
-    return proxy_url
 
 # Define a route for the homepage.
 # When a user accesses the root URL ("/"), this function will be executed,
@@ -85,25 +63,11 @@ def fetch_subtitles():
         return jsonify({"success": False, "message": "Video ID is required"}), 400
 
     try:
-        # Get the next proxy from our list
-        proxy = get_next_proxy()
-        
-        # Pass the proxy to youtube_transcript_api if available
-        # The list_transcripts function accepts a 'proxies' parameter.
-        # It expects a dictionary for requests proxies, but internally it might also handle a simple string.
-        # For direct use with youtube_transcript_api, we often just need to pass the proxy string directly
-        # if the library handles the session. Let's try passing it as a list, which the library expects
-        # for a pool of proxies.
-        
-        # If proxy is available, pass it to youtube_transcript_api.
-        # The youtube-transcript-api library's `list_transcripts` and `get_transcript` functions
-        # can accept a `proxies` parameter which expects a list of proxy strings.
-        # It will then cycle through these proxies.
-        
-        # Using a list of proxies, even if only one is provided, is the standard way for this library.
-        proxies_for_lib = PROXIES_LIST if PROXIES_LIST else None
+        # Pass the list of cleaned proxy strings to youtube_transcript_api.
+        # This matches the library's expected format for the 'proxies' parameter.
+        proxies_to_use = PROXIES_URLS_CLEANED if PROXIES_URLS_CLEANED else None
 
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, proxies=proxies_for_lib)
+        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, proxies=proxies_to_use)
         
         # Prepare a list to store information about each available subtitle track.
         available_subtitles = []
@@ -153,12 +117,11 @@ def download_subtitle():
         return jsonify({"success": False, "message": "Video ID and language are required"}), 400
 
     try:
-        # Get the next proxy from our list
-        proxy = get_next_proxy()
-        proxies_for_lib = PROXIES_LIST if PROXIES_LIST else None
+        # Pass the list of cleaned proxy strings to youtube_transcript_api.
+        proxies_to_use = PROXIES_URLS_CLEANED if PROXIES_URLS_CLEANED else None
 
         # Fetch the transcript for the specified video ID and language, using proxies if configured.
-        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang], proxies=proxies_for_lib)
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang], proxies=proxies_to_use)
         
         # Initialize an empty string to build the subtitle content.
         subtitle_content = ""

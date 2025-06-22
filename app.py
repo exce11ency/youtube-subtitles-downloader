@@ -6,22 +6,39 @@ from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, No
 import os
 # Import io for handling in-memory files (important for sending text files without saving to disk).
 import io
-# Import requests to potentially use for proxy configuration if youtube_transcript_api needs it directly.
+# Import requests for general HTTP handling, though youtube_transcript_api uses it internally.
 import requests
 
 # Initialize the Flask application.
 # The `static_folder` and `template_folder` tell Flask where to find static files (like CSS/JS)
 # and HTML templates, respectively. In our simple setup, both are in the current directory.
-app = Flask(__name__, static_folder='.', template_folder='.')
+app = Flask(__name__, static_folder='.', template_template_folder='.')
 
 # --- Proxy Configuration ---
 # Read proxy settings from environment variables.
 # PROXIES_LIST should be a comma-separated string of proxy URLs (e.g., "http://user:pass@ip:port,http://ip2:port2").
 # For now, we'll use an empty list if not set.
-PROXIES_LIST = os.getenv('PROXIES_LIST', '').split(',')
+PROXIES_LIST_RAW = os.getenv('PROXIES_LIST', '').split(',')
 # Clean up any empty strings from the split and ensure they are valid.
-# The youtube-transcript-api library expects a list of simple proxy strings.
-PROXIES_URLS_CLEANED = [p.strip() for p in PROXIES_LIST if p.strip()]
+# These are the raw proxy strings to be used.
+PROXIES_URLS_CLEANED = [p.strip() for p in PROXIES_LIST_RAW if p.strip()]
+
+# Counter to cycle through proxies
+current_proxy_index = 0
+
+def set_global_proxy_env(proxy_url):
+    """Sets HTTP_PROXY and HTTPS_PROXY environment variables."""
+    os.environ['HTTP_PROXY'] = proxy_url
+    os.environ['HTTPS_PROXY'] = proxy_url
+    print(f"Set environment proxies to: {proxy_url}")
+
+def clear_global_proxy_env():
+    """Clears HTTP_PROXY and HTTPS_PROXY environment variables."""
+    if 'HTTP_PROXY' in os.environ:
+        del os.environ['HTTP_PROXY']
+    if 'HTTPS_PROXY' in os.environ:
+        del os.environ['HTTPS_PROXY']
+    print("Cleared environment proxies.")
 
 
 # Define a route for the homepage.
@@ -62,12 +79,18 @@ def fetch_subtitles():
     if not video_id:
         return jsonify({"success": False, "message": "Video ID is required"}), 400
 
+    # --- Proxy application logic ---
+    global current_proxy_index
+    selected_proxy = None
+    if PROXIES_URLS_CLEANED:
+        selected_proxy = PROXIES_URLS_CLEANED[current_proxy_index % len(PROXIES_URLS_CLEANED)]
+        current_proxy_index += 1 # Move to the next proxy for the next request
+    
     try:
-        # Pass the list of cleaned proxy strings to youtube_transcript_api.
-        # This matches the library's expected format for the 'proxies' parameter.
-        proxies_to_use = PROXIES_URLS_CLEANED if PROXIES_URLS_CLEANED else None
-
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, proxies=proxies_to_use)
+        if selected_proxy:
+            set_global_proxy_env(selected_proxy) # Set proxy for this request
+        
+        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id) # No 'proxies' arg here
         
         # Prepare a list to store information about each available subtitle track.
         available_subtitles = []
@@ -97,6 +120,9 @@ def fetch_subtitles():
         # Catch any other unexpected errors and return a generic error message.
         print(f"Error fetching subtitles: {e}") # Log the error for debugging
         return jsonify({"success": False, "message": "An unexpected error occurred while fetching subtitle info."}), 500
+    finally:
+        # --- Ensure proxies are cleared after the request ---
+        clear_global_proxy_env()
 
 # Define an API endpoint to download specific subtitles.
 # This endpoint expects a GET request with 'videoId', 'lang', and 'format'.
@@ -116,12 +142,19 @@ def download_subtitle():
     if not video_id or not lang:
         return jsonify({"success": False, "message": "Video ID and language are required"}), 400
 
+    # --- Proxy application logic for download ---
+    global current_proxy_index
+    selected_proxy = None
+    if PROXIES_URLS_CLEANED:
+        selected_proxy = PROXIES_URLS_CLEANED[current_proxy_index % len(PROXIES_URLS_CLEANED)]
+        current_proxy_index += 1 # Move to the next proxy for the next request
+
     try:
-        # Pass the list of cleaned proxy strings to youtube_transcript_api.
-        proxies_to_use = PROXIES_URLS_CLEANED if PROXIES_URLS_CLEANED else None
+        if selected_proxy:
+            set_global_proxy_env(selected_proxy) # Set proxy for this request
 
         # Fetch the transcript for the specified video ID and language, using proxies if configured.
-        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang], proxies=proxies_to_use)
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang]) # No 'proxies' arg here
         
         # Initialize an empty string to build the subtitle content.
         subtitle_content = ""
@@ -175,6 +208,9 @@ def download_subtitle():
         # Catch any errors during the download process.
         print(f"Error downloading subtitle: {e}") # Log the error for debugging
         return jsonify({"success": False, "message": "An unexpected error occurred while downloading the subtitle."}), 500
+    finally:
+        # --- Ensure proxies are cleared after the request ---
+        clear_global_proxy_env()
 
 # This ensures the Flask development server runs only when the script is executed directly.
 if __name__ == '__main__':

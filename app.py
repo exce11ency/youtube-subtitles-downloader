@@ -12,7 +12,8 @@ import requests
 # Initialize the Flask application.
 # The `static_folder` and `template_folder` tell Flask where to find static files (like CSS/JS)
 # and HTML templates, respectively. In our simple setup, both are in the current directory.
-app = Flask(__name__, static_folder='.', template_template_folder='.')
+# Corrected: 'template_template_folder' was a typo, changed to 'template_folder'.
+app = Flask(__name__, static_folder='.', template_folder='.')
 
 # --- Proxy Configuration ---
 # Read proxy settings from environment variables.

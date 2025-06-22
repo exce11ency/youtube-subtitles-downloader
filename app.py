@@ -1,7 +1,8 @@
 # Import necessary modules from Flask for creating the web application and handling requests.
 from flask import Flask, request, jsonify, render_template, send_file
 # Import YouTubeTranscriptApi for fetching subtitles.
-from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound, NoLanguagesFound
+# Removed NoLanguagesFound as it might not be directly importable from the top-level package in some versions.
+from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
 # Import os for reading environment variables.
 import os
 # Import io for handling in-memory files (important for sending text files without saving to disk).
@@ -112,10 +113,8 @@ def fetch_subtitles():
     # Handle specific exceptions from youtube_transcript_api for better error reporting.
     except TranscriptsDisabled:
         return jsonify({"success": False, "message": "Subtitles are disabled for this video."}), 404
-    except NoTranscriptFound:
+    except NoTranscriptFound: # This exception usually covers cases where no languages are found either.
         return jsonify({"success": False, "message": "No subtitles found for this video (or they are not public/available)."}), 404
-    except NoLanguagesFound:
-        return jsonify({"success": False, "message": "No language transcripts found for this video."}), 404
     except requests.exceptions.RequestException as e:
         # Catch requests-related errors, often indicative of proxy issues or network problems.
         print(f"Network or proxy error fetching subtitles: {e}")
@@ -194,8 +193,6 @@ def download_subtitle():
 
     except NoTranscriptFound:
         return jsonify({"success": False, "message": "No subtitles found for this video (or they are not public/available)."}), 404
-    except NoLanguagesFound:
-        return jsonify({"success": False, "message": "No language transcripts found for this video."}), 404
     except TranscriptsDisabled:
         return jsonify({"success": False, "message": "Subtitles are disabled for this video."}), 404
     except requests.exceptions.RequestException as e:

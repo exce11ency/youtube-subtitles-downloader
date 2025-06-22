@@ -12,7 +12,6 @@ import requests
 # Initialize the Flask application.
 # The `static_folder` and `template_folder` tell Flask where to find static files (like CSS/JS)
 # and HTML templates, respectively. In our simple setup, both are in the current directory.
-# Corrected: 'template_template_folder' was a typo, changed to 'template_folder'.
 app = Flask(__name__, static_folder='.', template_folder='.')
 
 # --- Proxy Configuration ---
@@ -206,7 +205,7 @@ def download_subtitle():
         print(f"Network or proxy error downloading subtitle: {e}")
         return jsonify({"success": False, "message": "A network or proxy error occurred during download. Please try again or check proxy settings."}), 503
     except Exception as e:
-        # Catch any errors during the download process.
+        # Catch any other unexpected errors and return a generic error message.
         print(f"Error downloading subtitle: {e}") # Log the error for debugging
         return jsonify({"success": False, "message": "An unexpected error occurred while downloading the subtitle."}), 500
     finally:

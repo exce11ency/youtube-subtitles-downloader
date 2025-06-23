@@ -6,13 +6,23 @@
     <title>YouTube Subtitle Downloader</title>
     <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
     <!-- YOUR ACTUAL MEASUREMENT ID IS 'G-TQ5W6J1PGB' -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script> <!-- MODIFIED HERE -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-TQ5W6J1PGB'); // Already correct here
+      gtag('config', 'G-TQ5W6J1PGB');
     </script>
+
+    <!-- Google Translate Element -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+      // Set pageLanguage to 'en' as the default/source language of the page content
+      new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: true}, 'google_translate_element');
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -35,52 +45,120 @@
         .subtitle-results::-webkit-scrollbar-thumb:hover {
             background: #6b7280; /* Darker gray */
         }
+
+        /* Style for Google Translate branding to hide it or move it */
+        .goog-te-gadget-simple {
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .goog-te-gadget-simple a.goog-te-menu-value span {
+            color: white !important; /* Make text visible on dark header */
+        }
+        .goog-te-gadget-simple .goog-te-menu-value span:first-child {
+            display: none !important; /* Hide "Select Language" text */
+        }
+        .goog-te-gadget-simple .goog-te-menu-value::before {
+            content: "Language: " !important; /* Add custom text */
+            color: white !important;
+        }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4 bg-gray-100">
-    <div class="w-full max-w-2xl bg-white p-8 rounded-xl shadow-lg border border-gray-200">
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">YouTube Subtitle Downloader</h1>
-
-        <div class="mb-6">
-            <label for="youtubeUrl" class="block text-sm font-medium text-gray-700 mb-2">
-                Enter YouTube Video URL:
-            </label>
-            <input
-                type="url"
-                id="youtubeUrl"
-                placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ or https://youtube.com/shorts/AbCdEfGhIjK"
-                class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-400"
-                value=""
-            >
-        </div>
-
-        <button
-            id="fetchSubtitlesBtn"
-            class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-105"
-        >
-            <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            Fetch Subtitles
-        </button>
-
-        <div id="loadingIndicator" class="hidden text-center text-indigo-600 font-medium mt-6">
-            Loading available subtitles...
-        </div>
-
-        <div id="errorDisplay" class="hidden mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
-            <strong class="font-bold">Error:</strong>
-            <span class="block sm:inline" id="errorMessage"></span>
-        </div>
-
-        <div id="subtitleResults" class="mt-8 pt-6 border-t border-gray-200 hidden">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Available Subtitles:</h2>
-            <div id="subtitleList" class="space-y-4 max-h-80 overflow-y-auto pr-2 subtitle-results">
-                <!-- Subtitle options will be populated here -->
+<body class="flex flex-col min-h-screen bg-gray-100">
+    <!-- Header Section -->
+    <header class="bg-indigo-700 text-white p-4 shadow-md w-full">
+        <div class="container mx-auto flex flex-col sm:flex-row items-center justify-between">
+            <div class="flex items-center mb-2 sm:mb-0">
+                <!-- Logo Placeholder -->
+                <div class="text-2xl font-bold mr-3">🎬</div>
+                <h1 class="text-2xl font-bold">Subtitle Downloader Pro</h1>
             </div>
-            <p id="noSubtitlesMessage" class="hidden text-gray-600 mt-4 text-center">
-                No subtitles found for this video, or they are not publicly available.
+            <!-- Google Translate Element Placeholder -->
+            <div id="google_translate_element" class="flex items-center"></div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-4 text-center">Download YouTube Subtitles</h2>
+            <p class="text-center text-gray-600 mb-6">
+                Instantly download subtitles from any YouTube video in TXT and SRT formats. Just paste the link and get your desired subtitles!
+            </p>
+
+            <!-- Ad Placeholder: Top of Main Content -->
+            <div class="mb-6 p-4 bg-gray-50 border border-gray-300 rounded-lg text-center text-sm text-gray-700">
+                [Your Ad Block Here: Top of Content]
+            </div>
+
+            <div class="mb-6">
+                <label for="youtubeUrl" class="block text-sm font-medium text-gray-700 mb-2">
+                    Enter YouTube Video URL:
+                </label>
+                <input
+                    type="url"
+                    id="youtubeUrl"
+                    placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ or https://youtube.com/shorts/AbCdEfGhIjK"
+                    class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-400"
+                    value=""
+                >
+            </div>
+
+            <button
+                id="fetchSubtitlesBtn"
+                class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-105"
+            >
+                <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Fetch Subtitles
+            </button>
+
+            <div id="loadingIndicator" class="hidden text-center text-indigo-600 font-medium mt-6">
+                Loading available subtitles...
+            </div>
+
+            <div id="errorDisplay" class="hidden mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+                <strong class="font-bold">Error:</strong>
+                <span class="block sm:inline" id="errorMessage"></span>
+            </div>
+
+            <div id="subtitleResults" class="mt-8 pt-6 border-t border-gray-200 hidden">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Available Subtitles:</h3>
+                <div id="subtitleList" class="space-y-4 max-h-80 overflow-y-auto pr-2 subtitle-results">
+                    <!-- Subtitle options will be populated here -->
+                </div>
+                <p id="noSubtitlesMessage" class="hidden text-gray-600 mt-4 text-center">
+                    No subtitles found for this video, or they are not publicly available.
+                </p>
+            </div>
+
+            <!-- Ad Placeholder: Bottom of Main Content -->
+            <div class="mt-6 p-4 bg-gray-50 border border-gray-300 rounded-lg text-center text-sm text-gray-700">
+                [Your Ad Block Here: Bottom of Content]
+            </div>
+
+            <!-- Future Features Section -->
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Future Features:</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li>Automatic subtitle translation to any language (coming soon!)</li>
+                    <li>Batch download of subtitles for multiple videos</li>
+                    <li>Advanced formatting options for downloaded files</li>
+                    <li>Support for other video hosting platforms</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white p-4 mt-8 w-full">
+        <div class="container mx-auto text-center text-sm">
+            <p>&copy; 2025 Subtitle Downloader Pro. All rights reserved.</p>
+            <p class="mt-1">
+                <!-- <a href="#" class="hover:underline mx-1">Privacy Policy</a> |
+                <a href="#" class="hover:underline mx-1">Terms of Use</a> -->
             </p>
         </div>
-    </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

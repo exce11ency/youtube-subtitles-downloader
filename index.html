@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Subtitle Downloader</title>
+    <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
+    <!-- REPLACE 'G-XXXXXXXXXX' WITH YOUR ACTUAL MEASUREMENT ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TQ5W6J1PGB'); // REPLACE 'G-XXXXXXXXXX' HERE AS WELL
+    </script>
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -41,7 +50,7 @@
                 id="youtubeUrl"
                 placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ or https://youtube.com/shorts/AbCdEfGhIjK"
                 class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-400"
-                value="" <!-- Ссылка удалена, теперь поле будет пустым при загрузке -->
+                value=""
             >
         </div>
 

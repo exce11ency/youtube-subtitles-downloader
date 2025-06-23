@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YT Growth - AI YouTube Tools</title> <!-- Matching reference title -->
+    <title>Download YouTube Subtitles | YT Growth - Free SRT & TXT Captions</title> <!-- SEO Optimized Title -->
+    <meta name="description" content="Instantly download YouTube subtitles and captions for free in SRT and TXT formats. Get accurate video transcripts quickly and easily for any YouTube video."> <!-- SEO Optimized Description -->
+
     <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
     <!-- YOUR ACTUAL MEASUREMENT ID IS 'G-TQ5W6J1PGB' -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
@@ -14,15 +16,14 @@
       gtag('config', 'G-TQ5W6J1PGB');
     </script>
 
-    <!-- Google Translate Element (TEMPORARILY REMOVED FOR DEBUGGING GA) -->
-    <!--
+    <!-- Google Translate Element -->
     <script type="text/javascript">
     function googleTranslateElementInit() {
+      // Set pageLanguage to 'en' as the default/source language of the page content
       new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: true}, 'google_translate_element');
     }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    -->
 
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -48,15 +49,19 @@
             background: #6a6a6a; /* Lighter gray on hover */
         }
 
-        /* Hide Google Translate branding and element completely to match reference site (TEMPORARILY REMOVED FOR DEBUGGING GA) */
-        /*
-        #google_translate_element,
-        .goog-te-banner-frame,
-        body > .skiptranslate {
-            display: none !important;
-            visibility: hidden !important;
+        /* NEW: Soft hiding for Google Translate widget to avoid GA conflict */
+        #google-translate-wrapper {
+            position: absolute;
+            left: -9999px; /* Move it far off-screen */
+            top: 0;
+            width: 1px; /* Minimal dimensions */
+            height: 1px;
+            overflow: hidden; /* Hide anything that might pop out */
+            z-index: -1; /* Ensure it's behind everything else if it somehow appears */
         }
-        */
+
+        /* Ensure no other aggressive hiding rules are active for Google Translate related elements */
+        /* You can remove any previous commented-out display:none rules for .goog-te-banner-frame or .skiptranslate if they still exist */
     </style>
 </head>
 <body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
@@ -77,8 +82,10 @@
                     Get Started
                 </a>
             </nav>
-            <!-- Google Translate Element Placeholder (TEMPORARILY REMOVED FROM HERE) -->
-            <!-- <div id="google_translate_element"></div> -->
+            <!-- Google Translate Element Wrapper - Hidden off-screen -->
+            <div id="google-translate-wrapper">
+                <div id="google_translate_element"></div>
+            </div>
         </div>
     </header>
 
@@ -145,7 +152,30 @@
         </div>
     </main>
 
-    <!-- Placeholder Sections (Inactive as requested) -->
+    <!-- Detailed SEO Content Section -->
+    <section class="py-16 px-4 bg-[#0F0F0F] text-gray-100 border-t border-[#1A1A1A]">
+        <div class="container mx-auto text-left max-w-4xl">
+            <h2 class="text-4xl font-extrabold text-white mb-6">Why Download YouTube Subtitles?</h2>
+            <p class="text-lg text-gray-400 mb-6">
+                Downloading YouTube subtitles offers numerous benefits for content creators, students, researchers, and anyone looking to get more from video content. Our **free YouTube subtitle downloader** allows you to easily extract accurate text from any public video.
+            </p>
+            <h3 class="text-2xl font-semibold text-white mb-4">Enhance Your Learning & Accessibility</h3>
+            <p class="text-gray-400 mb-6">
+                Transcripts are invaluable for educational purposes. You can save lectures, tutorials, and informational videos as text, making it easier to review key points, search for specific information, or print for offline study. This is especially helpful for language learners who want to study dialogue at their own pace. Our tool provides **YouTube video transcripts** that are ready for your study needs.
+            </p>
+            <h3 class="text-2xl font-semibold text-white mb-4">Boost Content Creation & SEO</h3>
+            <p class="text-gray-400 mb-6">
+                For content creators, having a **YouTube captions file (SRT or TXT)** can significantly improve video accessibility and SEO. You can repurpose captions for blog posts, social media content, or even create new videos based on existing transcripts. Providing accurate captions makes your content accessible to a wider audience, including those with hearing impairments, and helps search engines understand your video's topic better. Use our **SRT YouTube downloader** to get started.
+            </p>
+            <h3 class="text-2xl font-semibold text-white mb-4">Quick & Easy Subtitle Download</h3>
+            <p class="text-gray-400 mb-6">
+                Our platform simplifies the process to **get YouTube transcript** files. No complex software installations required. Just paste the YouTube video URL into our intuitive tool, select your desired language and format (SRT or TXT), and download the subtitles instantly. It's a hassle-free solution for all your **YouTube video captions download** needs. Experience the convenience of a **free YouTube subtitle download** service designed for efficiency.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- Placeholder Sections (Inactive as requested) - AI Tools section moved here, above footer -->
     <section class="py-16 px-4 bg-[#0F0F0F] text-gray-100 border-t border-[#1A1A1A]">
         <div class="container mx-auto text-center max-w-4xl">
             <h2 class="text-4xl font-extrabold text-white mb-6">Explore Our AI Tools for YouTube</h2>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | YT Growth Blog</title> <!-- Dynamic title for individual post -->
+    <meta name="description" content="{{ post.content[:160] }}"> <!-- Dynamic description for SEO -->
+
+    <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TQ5W6J1PGB');
+    </script>
+
+    <!-- Google Translate Element -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: true}, 'google_translate_element');
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f0f; /* Deep dark background */
+            color: #e0e0e0;
+        }
+        .content-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .content-scroll::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 4px;
+        }
+        .content-scroll::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 4px;
+        }
+        .content-scroll::-webkit-scrollbar-thumb:hover {
+            background: #6a6a6a;
+        }
+        /* Soft hiding for Google Translate widget */
+        #google-translate-wrapper {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
+    {% include 'header.html' %} <!-- Include the common header -->
+
+    <main class="flex-grow py-16 px-4">
+        <div class="container mx-auto max-w-4xl bg-[#1A1A1A] p-8 md:p-12 rounded-xl shadow-2xl border border-[#2A2A2A]">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">{{ post.title }}</h1>
+            <p class="text-gray-400 text-sm mb-8">Published on {{ post.date_posted.strftime('%Y-%m-%d %H:%M') }}</p>
+
+            <div class="prose prose-invert max-w-none text-gray-200"> <!-- Using prose classes for basic markdown-like styling -->
+                {{ post.content | safe }} <!-- Render content, 'safe' is crucial for HTML in content -->
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-[#2A2A2A]">
+                <a href="/blog" class="text-purple-400 hover:text-purple-300 inline-flex items-center text-md font-medium">
+                    &larr; Back to Blog
+                </a>
+            </div>
+        </div>
+    </main>
+
+    {% include 'footer.html' %} <!-- Include the common footer -->
+</body>
+</html>
+

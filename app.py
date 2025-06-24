@@ -344,6 +344,94 @@ def fetch_subtitles():
     finally:
         clear_global_proxy_env()
 
+# --- Define an API endpoint to download specific subtitles. ---
+# This endpoint expects a GET request with 'videoId', 'lang', and 'format'.
+@app.route('/api/download_subtitle', methods=['GET'])
+def download_subtitle():
+    """
+    Downloads a specific subtitle track for a YouTube video ID in a given format.
+    Expects 'videoId', 'lang', and 'format' as query parameters.
+    Returns the subtitle content as a file download.
+    """
+    # Get query parameters from the request URL.
+    video_id = request.args.get('videoId')
+    lang = request.args.get('lang')
+    file_format = request.args.get('format', 'srt') # Default to srt if format is not specified
+
+    # Basic validation for required parameters.
+    if not video_id or not lang:
+        return jsonify({"success": False, "message": "Video ID and language are required"}), 400
+
+    # --- Proxy application logic for download ---
+    global current_proxy_index
+    selected_proxy = None
+    if PROXIES_URLS_CLEANED:
+        selected_proxy = PROXIES_URLS_CLEANED[current_proxy_index % len(PROXIES_URLS_CLEANED)]
+        current_proxy_index += 1 # Move to the next proxy for the next request
+
+    try:
+        if selected_proxy:
+            set_global_proxy_env(selected_proxy) # Set proxy for this request
+
+        # Fetch the transcript for the specified video ID and language, using proxies if configured.
+        # The youtube_transcript_api library automatically uses environment variables for proxies.
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
+        
+        # Initialize an empty string to build the subtitle content.
+        subtitle_content = ""
+
+        # Format the subtitle content based on the requested file_format.
+        if file_format == 'txt':
+            # For TXT, simply concatenate all text.
+            for entry in transcript:
+                subtitle_content += f"{entry['text']}\n"
+            mimetype = "text/plain"
+            filename = f"{video_id}_{lang}.txt"
+        elif file_format == 'srt':
+            # For SRT, format with timestamps and sequence numbers.
+            for i, entry in enumerate(transcript):
+                start_ms = int(entry['start'] * 1000)
+                end_ms = int((entry['start'] + entry['duration']) * 1000)
+
+                # Helper to format milliseconds into HH:MM:SS,MS
+                def format_timestamp(ms):
+                    hours = ms // 3_600_000
+                    ms %= 3_600_000
+                    minutes = ms // 60_000
+                    ms %= 60_000
+                    seconds = ms // 1_000
+                    milliseconds = ms % 1_000
+                    return f"{hours:02}:{minutes:02}:{seconds:02},{milliseconds:03}"
+
+                subtitle_content += f"{i + 1}\n" # Sequence number
+                subtitle_content += f"{format_timestamp(start_ms)} --> {format_timestamp(end_ms)}\n"
+                subtitle_content += f"{entry['text']}\n\n"
+            mimetype = "application/x-subrip" # Standard MIME type for SRT
+            filename = f"{video_id}_{lang}.srt"
+        else:
+            # Handle unsupported formats.
+            return jsonify({"success": False, "message": "Unsupported format. Only 'txt' and 'srt' are supported."}), 400
+
+        # Create an in-memory file-like object from the subtitle content.
+        buffer = io.BytesIO(subtitle_content.encode('utf-8'))
+        
+        # Send the file to the client for download.
+        return send_file(buffer, mimetype=mimetype, as_attachment=True, download_name=filename)
+
+    except NoTranscriptFound:
+        return jsonify({"success": False, "message": "No subtitles found for this video (or they are not public/available)."}), 404
+    except TranscriptsDisabled:
+        return jsonify({"success": False, "message": "Subtitles are disabled for this video."}), 404
+    except requests.exceptions.RequestException as e:
+        print(f"Network or proxy error downloading subtitle: {e}")
+        return jsonify({"success": False, "message": "A network or proxy error occurred during download. Please try again or check proxy settings."}), 503
+    except Exception as e:
+        print(f"Error downloading subtitle: {e}") # Log the error for debugging
+        return jsonify({"success": False, "message": "An unexpected error occurred while downloading the subtitle."}), 500
+    finally:
+        # --- Ensure proxies are cleared after the request ---
+        clear_global_proxy_env()
+
 # --- NEW: Authentication Routes ---
 @app.route('/login', methods=['GET', 'POST'])
 def login():

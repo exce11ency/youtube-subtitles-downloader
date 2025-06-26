@@ -33,6 +33,11 @@ from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer as Serializer # For generating secure tokens
 # --- END NEW ---
 
+# --- NEW: Markdown import for rendering blog content ---
+import markdown
+# --- END NEW ---
+
+print("DEBUG_CHECK: This app.py version is active!") # <-- Контрольная строка
 
 # Initialize the Flask application.
 app = Flask(__name__, static_folder='.', template_folder='.')
@@ -73,6 +78,11 @@ app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', 'your_mailtrap_password
 app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', 'noreply@ytgrowth.com') # Sender email address
 
 mail = Mail(app)
+# --- END NEW ---
+
+# --- NEW: Register Markdown filter for Jinja2 (using direct assignment) ---
+# This is a more direct way to register the filter with Flask's Jinja2 environment.
+app.jinja_env.filters['markdown'] = markdown.markdown
 # --- END NEW ---
 
 # --- NEW: User Model Definition ---
@@ -254,6 +264,7 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 # --- END NEW ---
 
+
 # --- Proxy Configuration (No changes here, just for context) ---
 # Read proxy settings from environment variables.
 PROXIES_LIST_RAW = os.getenv('PROXIES_LIST', '').split(',')
@@ -342,6 +353,7 @@ def fetch_subtitles():
         print(f"Error fetching subtitles: {e}")
         return jsonify({"success": False, "message": "An unexpected error occurred while fetching subtitle info."}), 500
     finally:
+        # --- Ensure proxies are cleared after the request ---
         clear_global_proxy_env()
 
 # --- Define an API endpoint to download specific subtitles. ---
@@ -426,7 +438,7 @@ def download_subtitle():
         print(f"Network or proxy error downloading subtitle: {e}")
         return jsonify({"success": False, "message": "A network or proxy error occurred during download. Please try again or check proxy settings."}), 503
     except Exception as e:
-        print(f"Error downloading subtitle: {e}") # Log the error for debugging
+        print(f"Error downloading subtitle: {e}")
         return jsonify({"success": False, "message": "An unexpected error occurred while downloading the subtitle."}), 500
     finally:
         # --- Ensure proxies are cleared after the request ---

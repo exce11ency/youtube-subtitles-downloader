@@ -55,6 +55,83 @@
             overflow: hidden;
             z-index: -1;
         }
+        /* Prose styling for markdown content */
+        .prose {
+            color: #d1d5db; /* Light gray text */
+            line-height: 1.75;
+            font-size: 1.125rem; /* Base font size */
+        }
+        .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+            color: #ffffff; /* White headings */
+            font-weight: 700;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+        }
+        .prose h1 { font-size: 2.5em; }
+        .prose h2 { font-size: 2em; }
+        .prose h3 { font-size: 1.75em; }
+        .prose strong {
+            color: #ffffff; /* Strong text in white */
+        }
+        .prose p {
+            margin-bottom: 1em;
+        }
+        .prose ul, .prose ol {
+            margin-left: 1.5em;
+            margin-bottom: 1em;
+            list-style-position: outside;
+        }
+        .prose ul li {
+            list-style-type: disc;
+        }
+        .prose ol li {
+            list-style-type: decimal;
+        }
+        .prose a {
+            color: #a78bfa; /* Purple links */
+            text-decoration: underline;
+            transition: color 0.2s ease-in-out;
+        }
+        .prose a:hover {
+            color: #c4b5fd; /* Lighter purple on hover */
+        }
+        .prose code {
+            background-color: #3f3f46; /* Darker gray for inline code */
+            color: #fca5a5; /* Light red for code */
+            padding: 0.2em 0.4em;
+            border-radius: 0.3em;
+            font-size: 0.9em;
+        }
+        .prose pre {
+            background-color: #1f2937; /* Even darker background for code blocks */
+            color: #e5e7eb; /* Light text for code blocks */
+            padding: 1em;
+            border-radius: 0.5em;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        .prose blockquote {
+            border-left: 0.25rem solid #6b7280; /* Gray border for blockquotes */
+            padding-left: 1em;
+            color: #9ca3af; /* Slightly darker gray for blockquote text */
+            font-style: italic;
+        }
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+        .prose th, .prose td {
+            border: 1px solid #374151; /* Dark gray borders for tables */
+            padding: 0.75em;
+            text-align: left;
+        }
+        .prose th {
+            background-color: #1f2937; /* Darker background for table headers */
+            color: #ffffff;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
@@ -65,8 +142,8 @@
             <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">{{ post.title }}</h1>
             <p class="text-gray-400 text-sm mb-8">Published on {{ post.date_posted.strftime('%Y-%m-%d %H:%M') }}</p>
 
-            <div class="prose prose-invert max-w-none text-gray-200"> <!-- Using prose classes for basic markdown-like styling -->
-                {{ post.content | safe }} <!-- Render content, 'safe' is crucial for HTML in content -->
+            <div class="prose max-w-none"> <!-- Apply prose styling here -->
+                {{ post.content | markdown | safe }} <!-- Apply markdown filter first, then safe -->
             </div>
 
             <div class="mt-10 pt-6 border-t border-[#2A2A2A]">
@@ -80,4 +157,3 @@
     {% include 'footer.html' %} <!-- Include the common footer -->
 </body>
 </html>
-

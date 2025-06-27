@@ -297,24 +297,6 @@ def index():
     """
     return render_template('index.html')
 
-# --- NEW ROUTES FOR TOOL PAGES ---
-# Route for the Video Idea Generator page
-@app.route('/tools/video-idea-generator')
-def video_idea_generator_page():
-    return render_template('video_idea_generator.html')
-
-# Route for the SEO Title & Description Optimizer page
-@app.route('/tools/seo-title-description-optimizer')
-def seo_title_description_optimizer_page():
-    return render_template('seo_title_description_optimizer.html')
-
-# Route for the YouTube Keyword Research page
-@app.route('/tools/youtube-keyword-research')
-def youtube_keyword_research_page():
-    return render_template('youtube_keyword_research.html')
-# --- END NEW ROUTES ---
-
-
 # Define an API endpoint to fetch available subtitles for a given YouTube video ID.
 @app.route('/api/fetch_subtitles', methods=['POST'])
 def fetch_subtitles():
@@ -371,6 +353,7 @@ def fetch_subtitles():
         print(f"Error fetching subtitles: {e}")
         return jsonify({"success": False, "message": "An unexpected error occurred while fetching subtitle info."}), 500
     finally:
+        # --- Ensure proxies are cleared after the request ---
         clear_global_proxy_env()
 
 # --- Define an API endpoint to download specific subtitles. ---
@@ -561,3 +544,51 @@ def reset_token(token):
         return redirect(url_for('login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
 # --- END NEW ---
+
+
+# --- NEW: Blog Frontend Routes (No changes here, just for context) ---
+@app.route('/blog')
+def blog_list():
+    """
+    Renders the blog list page, showing all published posts.
+    """
+    # Order by most recent posts first
+    posts = Post.query.filter_by(is_published=True).order_by(Post.date_posted.desc()).all()
+    return render_template('blog_list.html', posts=posts, title="Blog")
+
+@app.route('/blog/<slug>')
+def blog_post(slug):
+    """
+    Renders a single blog post by its slug.
+    """
+    # Retrieve the post by slug, return 404 if not found or not published
+    post = Post.query.filter_by(slug=slug, is_published=True).first_or_404()
+    return render_template('blog_post.html', title=post.title, post=post)
+# --- END NEW ---
+
+# This ensures the Flask development server runs only when the script is executed directly.
+if __name__ == '__main__':
+    # Create database tables if they don't exist
+    with app.app_context():
+        # IMPORTANT: db.create_all() creates tables, but migrations are preferred for changes.
+        # It's here for initial local setup convenience. For production, rely on 'flask db upgrade'.
+        db.create_all()
+
+        # Optional: Create an initial admin user if none exists
+        # This code will now ONLY create the user, it will NOT automatically log them in.
+        if User.query.count() == 0:
+            print("No users found. Creating a default admin user.")
+            admin_username = os.getenv('ADMIN_DEFAULT_USERNAME', 'admin')
+            admin_email = os.getenv('ADMIN_DEFAULT_EMAIL', 'admin@example.com')
+            admin_password = os.getenv('ADMIN_DEFAULT_PASSWORD', 'password') # CHANGE THIS IN PRODUCTION!
+
+            new_admin = User(username=admin_username, email=admin_email)
+            new_admin.set_password(admin_password)
+            db.session.add(new_admin)
+            db.session.commit()
+            print(f"Default admin user '{admin_username}' created. Password: '{admin_password}'")
+            print("PLEASE LOG IN WITH THESE CREDENTIALS. AND CHANGE THIS PASSWORD IMMEDIATELY AFTER FIRST LOGIN!")
+            # REMOVED: login_user(new_admin) - This line was removed to prevent auto-login.
+
+
+    app.run(debug=True)

@@ -137,7 +137,7 @@
             <!-- Video Info Display (Embedded Video + Title) -->
             <div id="videoInfoDisplay" class="hidden flex flex-col items-center p-6 bg-[#2A2A2A] rounded-lg shadow-inner border border-[#3A3A3A] mb-6">
                 <div class="video-container mb-4 border border-[#3A3A3A] shadow-md">
-                    <iframe id="youtubeEmbed" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe id="youtubeEmbed" src="" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <h3 id="videoTitle" class="text-xl font-semibold text-white text-center"></h3>
             </div>
@@ -334,8 +334,8 @@
 
             // Function to get YouTube embed URL
             function getYouTubeEmbedUrl(videoId) {
-                // Use autoplay=1 to automatically play when embedded, rel=0 to prevent related videos
-                return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+                // Use autoplay=0 to keep video paused on embed, rel=0 to prevent related videos
+                return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
             }
 
             // Placeholder for fetching actual video title (would require YouTube Data API call)

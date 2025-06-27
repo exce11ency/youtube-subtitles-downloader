@@ -59,6 +59,35 @@
             overflow: hidden; /* Hide anything that might pop out */
             z-index: -1; /* Ensure it's behind everything else if it somehow appears */
         }
+
+        /* Progress Bar Animation */
+        .progress-bar-gradient {
+            background: linear-gradient(90deg, rgba(147,51,234,1) 0%, rgba(219,39,119,1) 50%, rgba(147,51,234,1) 100%);
+            background-size: 200% 100%;
+            animation: progress-animation 2s linear infinite;
+        }
+
+        @keyframes progress-animation {
+            0% { background-position: 100% 0; }
+            100% { background-position: 0% 0; }
+        }
+
+        /* Aspect ratio for embedded video */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 0.75rem; /* rounded-lg */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
@@ -100,6 +129,24 @@
                 </div>
             </div>
 
+            <!-- NEW Ad Placeholder: Just below the main form -->
+            <div class="mb-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300">
+                [Your Ad Block Here] - Ad Spot 1
+            </div>
+
+            <!-- Video Info Display (Embedded Video + Title) -->
+            <div id="videoInfoDisplay" class="hidden flex flex-col items-center p-6 bg-[#2A2A2A] rounded-lg shadow-inner border border-[#3A3A3A] mb-6">
+                <div class="video-container mb-4 border border-[#3A3A3A] shadow-md">
+                    <iframe id="youtubeEmbed" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <h3 id="videoTitle" class="text-xl font-semibold text-white text-center"></h3>
+            </div>
+
+            <!-- Progress Bar -->
+            <div id="progressBar" class="hidden w-full bg-[#1A1A1A] rounded-full h-3 mb-6 overflow-hidden">
+                <div class="progress-bar-gradient h-full rounded-full" style="width: 100%;"></div>
+            </div>
+
             <!-- Loading, Error, and Results Display -->
             <div id="loadingIndicator" class="hidden text-center text-purple-400 font-medium text-lg mb-6">
                 Loading available subtitles...
@@ -120,12 +167,25 @@
                 </p>
             </div>
 
-            <!-- Ad Placeholder: Below Subtitle Downloader - Subtle styling -->
+            <!-- NEW Ad Placeholder: After subtitle results -->
             <div class="mt-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300">
-                [Your Ad Block Here]
+                [Your Ad Block Here] - Ad Spot 2
             </div>
         </div>
     </main>
+
+    <!-- NEW Ad Placeholder: Row of multiple banners (Ad Spot 3) -->
+    <div class="container mx-auto max-w-4xl px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-6 h-48 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300 flex items-center justify-center text-center text-xl">
+                [Your Ad Block Here] - Ad Spot 3.1
+            </div>
+            <div class="p-6 h-48 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300 flex items-center justify-center text-center text-xl">
+                [Your Ad Block Here] - Ad Spot 3.2
+            </div>
+        </div>
+    </div>
+
 
     <!-- Detailed SEO Content Section -->
     <section class="py-16 px-4 bg-[#0F0F0F] text-gray-100 border-t border-[#1A1A1A]">
@@ -134,6 +194,11 @@
             <p class="text-lg text-gray-400 mb-6">
                 Our **free YouTube subtitle downloader** from YT Growth offers seamless functionality to instantly extract subtitles from any public YouTube video. Whether you need an **SRT YouTube downloader** or a simple **TXT transcript grabber**, our tool simplifies the process for everyone from content creators to students and researchers.
             </p>
+
+            <!-- NEW Ad Placeholder: Inside SEO content -->
+            <div class="my-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300">
+                [Your Ad Block Here] - Ad Spot 4
+            </div>
 
             <h3 class="text-3xl font-semibold text-white mb-4">Enhance Accessibility and Learning</h3>
             <p class="text-gray-400 mb-6">
@@ -220,6 +285,14 @@
         </div>
     </section>
 
+    <!-- NEW Ad Placeholder: Below AI Tools Section, above footer (Ad Spot 5) -->
+    <div class="container mx-auto max-w-4xl px-4 py-8 text-center">
+        <div class="p-6 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300">
+            [Your Ad Block Here] - Ad Spot 5
+        </div>
+    </div>
+
+
     {% include 'footer.html' %} <!-- Include the common footer -->
 
     <script>
@@ -232,6 +305,11 @@
             const subtitleResultsDiv = document.getElementById('subtitleResults');
             const subtitleList = document.getElementById('subtitleList');
             const noSubtitlesMessage = document.getElementById('noSubtitlesMessage');
+            const videoInfoDisplay = document.getElementById('videoInfoDisplay');
+            const youtubeEmbed = document.getElementById('youtubeEmbed'); // Changed from videoThumbnail
+            const videoTitle = document.getElementById('videoTitle');
+            const progressBar = document.getElementById('progressBar');
+
 
             // Function to show error message
             function showErrorMessage(message) {
@@ -254,13 +332,40 @@
                 return (match && match[1] && match[1].length === 11) ? match[1] : null;
             }
 
+            // Function to get YouTube embed URL
+            function getYouTubeEmbedUrl(videoId) {
+                // Use autoplay=1 to automatically play when embedded, rel=0 to prevent related videos
+                return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+            }
+
+            // Placeholder for fetching actual video title (would require YouTube Data API call)
+            // For now, we'll use a generic placeholder or part of the URL.
+            function getPlaceholderVideoTitle(url) {
+                try {
+                    const urlObj = new URL(url);
+                    // Simple extraction from URL if available, otherwise generic
+                    // Note: 'title' param is not a standard way to get YouTube video titles
+                    const titleParam = urlObj.searchParams.get('title'); 
+                    return titleParam || 'Fetching video details...'; // Placeholder text
+                } catch (e) {
+                    return 'Fetching video details...';
+                }
+            }
+
+
             // Event listener for the fetch button
             fetchSubtitlesBtn.addEventListener('click', async () => {
                 hideErrorMessage();
                 subtitleResultsDiv.classList.add('hidden');
                 subtitleList.innerHTML = ''; // Clear previous results
                 noSubtitlesMessage.classList.add('hidden');
+                
+                videoInfoDisplay.classList.add('hidden'); // Hide video info initially
+                youtubeEmbed.src = ''; // Clear previous embed src
+                videoTitle.textContent = ''; // Clear previous title
                 loadingIndicator.classList.remove('hidden'); // Show loading indicator
+                progressBar.classList.remove('hidden'); // Show progress bar
+
 
                 const youtubeUrl = youtubeUrlInput.value.trim();
                 const videoId = getYouTubeVideoId(youtubeUrl);
@@ -268,8 +373,14 @@
                 if (!videoId) {
                     showErrorMessage('Please enter a valid YouTube video URL.');
                     loadingIndicator.classList.add('hidden');
+                    progressBar.classList.add('hidden'); // Hide progress bar
                     return;
                 }
+
+                // Display embedded video and placeholder title
+                youtubeEmbed.src = getYouTubeEmbedUrl(videoId);
+                videoTitle.textContent = getPlaceholderVideoTitle(youtubeUrl); // Placeholder for video title
+                videoInfoDisplay.classList.remove('hidden'); // Show video info display
 
                 // --- ACTUAL BACKEND INTEGRATION ---
                 // This is where we call our Flask backend.
@@ -292,7 +403,13 @@
 
                     const data = await response.json(); // Parse the JSON response from the backend
 
+                    // In a real scenario, you'd fetch video title here from YouTube Data API
+                    // For now, update the placeholder if subtitles are found.
                     if (data.success && data.subtitles.length > 0) {
+                        // Assuming we could get a real title, update it here.
+                        // For this implementation, we keep the placeholder or set a generic text.
+                        videoTitle.textContent = 'Subtitles Ready!'; // Or a default if no actual title fetched
+                        
                         data.subtitles.forEach(sub => {
                             const subtitleItem = document.createElement('div');
                             // Styling to match reference: dark background, subtle border, light text
@@ -316,12 +433,15 @@
                     } else {
                         noSubtitlesMessage.classList.remove('hidden');
                         subtitleResultsDiv.classList.remove('hidden'); // Show the results div even if no subtitles
+                        videoInfoDisplay.classList.add('hidden'); // Hide video info if no subtitles found
                     }
                 } catch (error) {
                     console.error('Error fetching subtitles:', error);
                     showErrorMessage(`Error: ${error.message || 'Could not fetch subtitles. Please check the URL or try again later.'}`);
+                    videoInfoDisplay.classList.add('hidden'); // Hide video info on error
                 } finally {
                     loadingIndicator.classList.add('hidden'); // Hide loading indicator
+                    progressBar.classList.add('hidden'); // Hide progress bar
                 }
             });
         });

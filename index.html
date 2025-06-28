@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free YouTube Subtitle Downloader | YT Growth - SRT & TXT Transcripts</title> <!-- SEO Optimized Title -->
-    <meta name="description" content="Download YouTube subtitles for free in SRT & TXT. Get accurate, instant video transcripts and captions to boost learning, content creation, and accessibility with YT Growth tools."> <!-- SEO Optimized Description -->
+    <title>Free YouTube Subtitle Downloader | YT Growth - SRT & TXT Transcripts</title>
+    <meta name="description" content="Download YouTube subtitles for free in SRT & TXT. Get accurate, instant video transcripts and captions to boost learning, content creation, and accessibility with YT Growth tools.">
 
     <!-- Favicon -->
     <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=YT" type="image/png">
-    <!-- You can replace the href above with your actual favicon.ico or .png file -->
 
     <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
-    <!-- YOUR ACTUAL MEASUREMENT ID IS 'G-TQ5W6J1PGB' -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -23,18 +21,21 @@
     <!-- Google Translate Element -->
     <script type="text/javascript">
     function googleTranslateElementInit() {
-      // Set pageLanguage to 'en' as the default/source language of the page content
       new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: true}, 'google_translate_element');
     }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Google AdSense - ОСНОВНОЙ КОД (Ваш pub-ID теперь здесь) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1523592243681550"
+     crossorigin="anonymous"></script>
 
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f0f0f; /* Deep dark background */
+            background-color: #0f0f0f;
             color: #e0e0e0;
         }
         /* Custom scrollbar for subtitle display area */
@@ -42,26 +43,26 @@
             width: 8px;
         }
         .subtitle-results::-webkit-scrollbar-track {
-            background: #1a1a1a; /* Darker track */
+            background: #1a1a1a;
             border-radius: 4px;
         }
         .subtitle-results::-webkit-scrollbar-thumb {
-            background: #4a4a4a; /* Medium gray */
+            background: #4a4a4a;
             border-radius: 4px;
         }
         .subtitle-results::-webkit-scrollbar-thumb:hover {
-            background: #6a6a6a; /* Lighter gray on hover */
+            background: #6a6a6a;
         }
 
-        /* NEW: Soft hiding for Google Translate widget to avoid GA conflict */
+        /* Soft hiding for Google Translate widget to avoid GA conflict */
         #google-translate-wrapper {
             position: absolute;
-            left: -9999px; /* Move it far off-screen */
+            left: -9999px;
             top: 0;
-            width: 1px; /* Minimal dimensions */
+            width: 1px;
             height: 1px;
-            overflow: hidden; /* Hide anything that might pop out */
-            z-index: -1; /* Ensure it's behind everything else if it somehow appears */
+            overflow: hidden;
+            z-index: -1;
         }
 
         /* Progress Bar Animation */
@@ -83,7 +84,7 @@
             padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
-            border-radius: 0.75rem; /* rounded-lg */
+            border-radius: 0.75rem;
         }
         .video-container iframe {
             position: absolute;
@@ -92,12 +93,29 @@
             width: 100%;
             height: 100%;
         }
+        /* Стили для контейнеров рекламы, чтобы AdSense мог определить размеры */
+        .adsbygoogle-container {
+            height: 100px; /* Фиксированная высота для рекламного блока */
+            width: 100%; /* Занимает всю доступную ширину */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            /* Стилизация для лучшей видимости, пока реклама не загрузится */
+            background-color: #333; /* Темный серый фон */
+            border: 1px dashed #555; /* Пунктирная граница */
+            color: #ccc;
+            text-align: center;
+            font-size: 1.1em;
+            font-style: italic;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
-    {% include 'header.html' %} <!-- Include the common header -->
+    {% include 'header.html' %}
 
-    <!-- Hero Section / Main Content Area - Dark, central container -->
     <main class="flex-grow flex items-center justify-center py-16 px-4">
         <div class="w-full max-w-4xl bg-[#1A1A1A] p-8 md:p-12 rounded-xl shadow-2xl border border-[#2A2A2A]">
             <div class="text-center mb-10">
@@ -110,7 +128,7 @@
                 </p>
             </div>
 
-            <!-- Subtitle Downloader Form - Replaces original CTA buttons -->
+            <!-- Subtitle Downloader Form -->
             <div class="bg-[#2A2A2A] p-6 rounded-lg shadow-inner border border-[#3A3A3A] mb-8">
                 <label for="youtubeUrl" class="block text-base font-medium text-gray-300 mb-3">
                     Enter YouTube Video URL:
@@ -127,15 +145,23 @@
                         id="fetchSubtitlesBtn"
                         class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-md shadow-lg hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 focus:ring-offset-[#2A2A2A] transition duration-200 transform hover:scale-105 flex-shrink-0"
                     >
-                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                         Fetch Subtitles
                     </button>
                 </div>
             </div>
 
-            <!-- NEW Ad Placeholder: Just below the main form -->
-            <div class="mb-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300">
-                [Your Ad Block Here] - Ad Spot 1
+            <!-- AdSense Ad Unit 1 (Рекламный блок, который вы получите из AdSense) -->
+            <div class="adsbygoogle-container">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-1523592243681550"
+                     data-ad-slot="YOUR-AD-SLOT-ID-1"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
 
             <!-- Video Info Display (Embedded Video + Title) -->
@@ -171,21 +197,45 @@
                 </p>
             </div>
 
-            <!-- NEW Ad Placeholder: After subtitle results -->
-            <div class="mt-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300">
-                [Your Ad Block Here] - Ad Spot 2
+            <!-- AdSense Ad Unit 2 (Рекламный блок, который вы получите из AdSense) -->
+            <div class="adsbygoogle-container">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-1523592243681550"
+                     data-ad-slot="YOUR-AD-SLOT-ID-2"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
         </div>
     </main>
 
-    <!-- NEW Ad Placeholder: Row of multiple banners (Ad Spot 3) -->
+    <!-- AdSense Ad Unit 3 (Рекламный блок, который вы получите из AdSense) -->
     <div class="container mx-auto max-w-4xl px-4 py-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="p-6 h-48 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300 flex items-center justify-center text-center text-xl">
-                [Your Ad Block Here] - Ad Spot 3.1
+            <div class="adsbygoogle-container">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-1523592243681550"
+                     data-ad-slot="YOUR-AD-SLOT-ID-3"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
-            <div class="p-6 h-48 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300 flex items-center justify-center text-center text-xl">
-                [Your Ad Block Here] - Ad Spot 3.2
+            <div class="adsbygoogle-container">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-1523592243681550"
+                     data-ad-slot="YOUR-AD-SLOT-ID-4"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
         </div>
     </div>
@@ -199,9 +249,17 @@
                 Our **free YouTube subtitle downloader** from YT Growth offers seamless functionality to instantly extract subtitles from any public YouTube video. Whether you need an **SRT YouTube downloader** or a simple **TXT transcript grabber**, our tool simplifies the process for everyone from content creators to students and researchers.
             </p>
 
-            <!-- NEW Ad Placeholder: Inside SEO content -->
-            <div class="my-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300">
-                [Your Ad Block Here] - Ad Spot 4
+            <!-- AdSense Ad Unit 4 (Рекламный блок, который вы получите из AdSense) -->
+            <div class="adsbygoogle-container">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-1523592243681550"
+                     data-ad-slot="YOUR-AD-SLOT-ID-5"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
 
             <h3 class="text-3xl font-semibold text-white mb-4">Enhance Accessibility and Learning</h3>
@@ -241,58 +299,18 @@
         </div>
     </section>
 
-    <!-- Placeholder Sections (Inactive as requested) - AI Tools section moved here, above footer -->
-    <section class="py-16 px-4 bg-[#0F0F0F] text-gray-100 border-t border-[#1A1A1A]">
-        <div class="container mx-auto text-center max-w-4xl">
-            <h2 class="text-4xl font-extrabold text-white mb-6">Explore Our AI Tools for YouTube</h2>
-            <p class="text-lg text-gray-400 mb-10">
-                Unlock the full potential of your YouTube content with our advanced AI-powered features.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-[#1A1A1A] p-6 rounded-lg border border-[#2A2A2A] shadow-lg">
-                    <div class="text-5xl mb-4">✨</div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Caption Generation</h3>
-                    <p class="text-gray-400">Automatically generate accurate captions for your videos.</p>
-                </div>
-                <div class="bg-[#1A1A1A] p-6 rounded-lg border border-[#2A2A2A] shadow-lg">
-                    <div class="text-5xl mb-4">💬</div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Comment Analysis</h3>
-                    <p class="text-gray-400">Gain insights from your audience's comments with AI.</p>
-                </div>
-                <div class="bg-[#1A1A1A] p-6 rounded-lg border border-[#2A2A2A] shadow-lg">
-                    <div class="text-5xl mb-4">📊</div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Performance Analytics</h3>
-                    <p class="text-gray-400">Track and optimize your video performance effortlessly.</p>
-                </div>
-                <!-- NEW SERVICE: Video Idea Generator -->
-                <div class="bg-[#1A1A1A] p-6 rounded-lg border border-[#2A2A2A] shadow-lg">
-                    <div class="text-5xl mb-4">💡</div> <!-- Lightbulb emoji for ideas -->
-                    <h3 class="text-xl font-semibold text-white mb-2">Video Idea Generator</h3>
-                    <p class="text-gray-400">Find trending ideas for your next video by analyzing data from thousands of popular YouTube videos in your niche.</p>
-                </div>
-                <!-- NEW SERVICE: SEO Title & Description Optimizer -->
-                <div class="bg-[#1A1A1A] p-6 rounded-lg border border-[#2A2A2A] shadow-lg">
-                    <div class="text-5xl mb-4">✍️</div> <!-- Writing hand emoji for text/optimization -->
-                    <h3 class="text-xl font-semibold text-white mb-2">SEO Title & Description Optimizer</h3>
-                    <p class="text-gray-400">Craft SEO-optimized titles and descriptions that will boost your video's visibility in YouTube search.</p>
-                </div>
-                <!-- NEW SERVICE: YouTube Keyword Research -->
-                <div class="bg-[#1A1A1A] p-6 rounded-lg border border-[#2A2A2A] shadow-lg">
-                    <div class="text-5xl mb-4">🔍</div> <!-- Magnifying glass emoji for research/keywords -->
-                    <h3 class="text-xl font-semibold text-white mb-2">YouTube Keyword Research</h3>
-                    <p class="text-gray-400">Discover high-impact keywords and phrases for your videos to increase reach and visibility in YouTube search.</p>
-                </div>
-            </div>
-            <p class="mt-10 text-gray-500 italic">
-                (These sections are placeholders and not yet active. Functional features coming soon!)
-            </p>
-        </div>
-    </section>
-
-    <!-- NEW Ad Placeholder: Below AI Tools Section, above footer (Ad Spot 5) -->
+    <!-- AdSense Ad Unit 5 (Рекламный блок, который вы получите из AdSense) -->
     <div class="container mx-auto max-w-4xl px-4 py-8 text-center">
-        <div class="p-6 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300">
-            [Your Ad Block Here] - Ad Spot 5
+        <div class="adsbygoogle-container">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-1523592243681550"
+                 data-ad-slot="YOUR-AD-SLOT-ID-6"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
     </div>
 
@@ -380,11 +398,6 @@
                     progressBar.classList.add('hidden'); // Hide progress bar
                     return;
                 }
-
-                // Display embedded video and placeholder title
-                youtubeEmbed.src = getYouTubeEmbedUrl(videoId);
-                videoTitle.textContent = getPlaceholderVideoTitle(youtubeUrl); // Placeholder for video title
-                videoInfoDisplay.classList.remove('hidden'); // Show video info display
 
                 // --- ACTUAL BACKEND INTEGRATION ---
                 // This is where we call our Flask backend.

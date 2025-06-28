@@ -1,26 +1,79 @@
-<header class="w-full bg-[#1A1A1A] py-3 px-6 border-b border-[#2A2A2A] shadow-md">
+<header class="w-full bg-[#1A1A1A] py-3 px-6 border-b border-[#2A2A2A] shadow-md relative z-10">
     <div class="container mx-auto flex items-center justify-between">
         <a href="/" class="flex items-center space-x-2">
-            <!-- Simple text logo to match reference -->
+            <!-- Простой текстовый логотип -->
             <span class="text-2xl font-bold text-white">YT Growth</span>
         </a>
+
+        <!-- Основная навигация для десктопа -->
         <nav class="hidden md:flex items-center space-x-6 text-gray-400 font-medium">
-            <a href="/blog" class="hover:text-white transition duration-200">Blog</a> <!-- Link to blog -->
-            <a href="/tools" class="hover:text-white transition duration-200">Tools</a> <!-- Link to all tools page -->
-            <a href="/pricing" class="hover:text-white transition duration-200">Pricing</a> <!-- Link to pricing page -->
-            <a href="/faq" class="hover:text-white transition duration-200">FAQ</a> <!-- Link to FAQ page -->
-            <a href="/contact" class="hover:text-white transition duration-200">Contact</a> <!-- Link to contact page -->
+            <a href="/blog" class="hover:text-white transition duration-200">Blog</a>
+            <a href="/tools" class="hover:text-white transition duration-200">Tools</a>
+            <a href="/pricing" class="hover:text-white transition duration-200">Pricing</a>
+            <a href="/faq" class="hover:text-white transition duration-200">FAQ</a>
+            <a href="/contact" class="hover:text-white transition duration-200">Contact</a>
             <a href="/get-started" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-md text-sm font-semibold hover:from-purple-700 hover:to-pink-700 transition duration-200">
                 Get Started
             </a>
         </nav>
-        <!-- Google Translate Element Wrapper - Hidden off-screen -->
+
+        <!-- Гамбургер-меню для мобильных -->
+        <div class="md:hidden flex items-center">
+            <button id="mobileMenuButton" class="text-gray-400 hover:text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path id="menuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    <path id="closeIcon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Обертка для Google Translate Element (расположение остается здесь для совместимости) -->
         <div id="google-translate-wrapper">
             <div id="google_translate_element"></div>
         </div>
     </div>
-    <!-- Development Banner -->
+
+    <!-- Мобильное меню (скрыто по умолчанию) -->
+    <nav id="mobileMenu" class="md:hidden absolute top-full left-0 w-full bg-[#1A1A1A] border-t border-[#2A2A2A] shadow-lg py-4 hidden">
+        <div class="flex flex-col items-center space-y-4 text-gray-400 font-medium">
+            <a href="/blog" class="hover:text-white transition duration-200 w-full text-center py-2">Blog</a>
+            <a href="/tools" class="hover:text-white transition duration-200 w-full text-center py-2">Tools</a>
+            <a href="/pricing" class="hover:text-white transition duration-200 w-full text-center py-2">Pricing</a>
+            <a href="/faq" class="hover:text-white transition duration-200 w-full text-center py-2">FAQ</a>
+            <a href="/contact" class="hover:text-white transition duration-200 w-full text-center py-2">Contact</a>
+            <a href="/get-started" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-md text-sm font-semibold hover:from-purple-700 hover:to-pink-700 transition duration-200 w-fit text-center mt-4">
+                Get Started
+            </a>
+        </div>
+    </nav>
+
+    <!-- Баннер активной разработки -->
     <div class="w-full bg-yellow-600 text-white text-center py-2 text-sm font-semibold mt-2 rounded-md">
         This site is currently in active development. Thank you for your patience!
     </div>
 </header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        const closeIcon = document.getElementById('closeIcon');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        // Close menu if a link is clicked
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
+        });
+    });
+</script>

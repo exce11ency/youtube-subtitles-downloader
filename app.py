@@ -1,12 +1,12 @@
 # Import necessary modules from Flask for creating the web application and handling requests.
-from flask import Flask, request, jsonify, render_template, send_file, redirect, url_for, flash, abort
+from flask import Flask, request, jsonify, render_template, send_file, redirect, url_for, flash
 # Import YouTubeTranscriptApi for fetching subtitles.
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
 # Import os for reading environment variables.
 import os
 # Import io for handling in-memory files (important for sending text files without saving to disk).
 import io
-# Import requests for general HTTP handling (для запросов к Telegram API).
+# Import requests for general HTTP handling, though youtube_transcript_api uses it internally.
 import requests
 
 # --- Database imports ---
@@ -20,7 +20,7 @@ from flask_admin.contrib.sqla import ModelView
 
 # --- WTForms imports for custom form ---
 from flask_admin.model.form import BaseForm
-from wtforms import BooleanField, StringField, TextAreaField, PasswordField, SubmitField, SelectField # Added SelectField
+from wtforms import BooleanField, StringField, TextAreaField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 
 # --- Flask-Login imports ---
@@ -35,7 +35,7 @@ from itsdangerous import URLSafeTimedSerializer as Serializer # For generating s
 # --- Markdown import for rendering blog content ---
 import markdown
 
-print("DEBUG_CHECK: This app.py version is active! (User Types, Admin Panel, and Ads.txt Route)") # <-- Контрольная строка
+print("DEBUG_CHECK: This app.py version is active! (All Routes Included - Final Check)") # <-- Контрольная строка
 
 # Initialize the Flask application.
 app = Flask(__name__, static_folder='.', template_folder='.')
@@ -68,10 +68,6 @@ app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', 'noreply@yt
 
 mail = Mail(app)
 
-# --- Telegram Bot Configuration (kept for reference, but not used in frontend now) ---
-# TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN') # Already defined in the incoming app.py
-# TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID') # Already defined in the incoming app.py
-
 # --- Register Markdown filter for Jinja2 ---
 app.jinja_env.filters['markdown'] = markdown.markdown
 
@@ -81,10 +77,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
-    user_type = db.Column(db.String(20), nullable=False, default='regular') # 'admin', 'regular', 'paid'
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.user_type}')"
+        return f"User('{self.username}', '{self.email}')"
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -105,15 +100,6 @@ class User(db.Model, UserMixin):
             return None
         return db.session.get(User, user_id)
 
-    @property
-    def is_admin(self):
-        return self.user_type == 'admin'
-
-    @property
-    def is_paid_user(self): # Added for future use, if 'paid' tier becomes relevant
-        return self.user_type == 'paid'
-
-
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))
@@ -130,21 +116,24 @@ class Post(db.Model):
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
-# --- Flask-Admin Custom ModelView for Post (Protected by Admin only) ---
+# --- Flask-Admin Custom ModelView for Post (Protected) ---
+class PostAdminForm(BaseForm):
+    title = StringField('Title', validators=[DataRequired(), Length(max=120)])
+    slug = StringField('Slug', validators=[DataRequired(), Length(max=120)])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    is_published = BooleanField('Published')
+
 class ProtectedModelView(ModelView):
     def is_accessible(self):
-        # Admin access is now required
-        return current_user.is_authenticated and getattr(current_user, 'is_admin', False)
+        # Добавляем отладочный вывод
+        print(f"DEBUG: ProtectedModelView.is_accessible called. current_user.is_authenticated: {current_user.is_authenticated}")
+        return current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
-        flash('You must be logged in as an administrator to access this page.', 'danger')
+        # Добавляем отладочный вывод
+        print(f"DEBUG: ProtectedModelView.inaccessible_callback called. Redirecting to login.")
+        flash('You must be logged in to access this page.', 'danger')
         return redirect(url_for('login', next=request.url))
-
-class PostAdminForm(BaseForm): # Define PostAdminForm here if it's used by PostAdminView
-    title = StringField('Title', validators=[DataRequired()])
-    slug = StringField('Slug', validators=[DataRequired()])
-    content = TextAreaField('Content')
-    is_published = BooleanField('Is Published')
 
 class PostAdminView(ProtectedModelView):
     form = PostAdminForm
@@ -152,48 +141,43 @@ class PostAdminView(ProtectedModelView):
     form_columns = ('title', 'slug', 'content', 'is_published')
 
 # --- Flask-Admin Custom ModelView for User (Protected and Custom Form) ---
-class UserAdminForm(FlaskForm): # Changed to FlaskForm for proper WTForms integration
+class UserAdminForm(BaseForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=4, max=64)])
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Length(min=6, max=120)])
     password = PasswordField('New Password (leave blank to keep current)', validators=[Length(min=6, max=128)])
-    user_type = SelectField('User Type', choices=[('regular', 'Regular User'), ('paid', 'Paid User'), ('admin', 'Administrator')], validators=[DataRequired()])
-
 
     def validate_username(self, field):
-        # Allow validation to pass if the username is unchanged during an edit
-        if User.query.filter_by(username=field.data).first() and \
-           (self._obj is None or self._obj.username != field.data): # _obj refers to the model instance being edited
+        if field.data and User.query.filter_by(username=field.data).first() and \
+           (self._obj is None or self._obj.username != field.data):
             raise ValidationError('This username is already taken.')
 
     def validate_email(self, field):
-        # Allow validation to pass if the email is unchanged during an edit
-        if User.query.filter_by(email=field.data).first() and \
-           (self._obj is None or self._obj.email != field.data): # _obj refers to the model instance being edited
+        if field.data and User.query.filter_by(email=field.data).first() and \
+           (self._obj is None or self._obj.email != field.data):
             raise ValidationError('This email is already taken.')
 
 class UserAdminView(ProtectedModelView):
     form = UserAdminForm
-    column_list = ('username', 'email', 'user_type')
-    form_columns = ('username', 'email', 'password', 'user_type')
-    form_excluded_columns = ['password_hash']
+    column_list = ('username', 'email')
+    form_columns = ('username', 'email', 'password')
+    form_excluded_columns = ['password_hash'] # Ensure password_hash is not directly editable
 
     def on_model_change(self, form, model, is_created):
-        # Hash password only if it's provided in the form
         if form.password.data:
             model.set_password(form.password.data)
-        # Ensure user_type is set for new users if not explicitly provided (should be by form, but as a safeguard)
-        if is_created and not form.user_type.data:
-            model.user_type = 'regular'
         return super().on_model_change(form, model, is_created)
 
-# --- Custom Admin Index View to protect the main admin page (Admin only) ---
+# --- Custom Admin Index View to protect the main admin page ---
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
-        # Admin access is now required
-        return current_user.is_authenticated and getattr(current_user, 'is_admin', False)
+        # Добавляем отладочный вывод
+        print(f"DEBUG: MyAdminIndexView.is_accessible called. current_user.is_authenticated: {current_user.is_authenticated}")
+        return current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
-        flash('You must be logged in as an administrator to access the admin dashboard.', 'danger')
+        # Добавляем отладочный вывод
+        print(f"DEBUG: MyAdminIndexView.inaccessible_callback called. Redirecting to login.")
+        flash('You must be logged in to access the admin dashboard.', 'danger')
         return redirect(url_for('login', next=request.url))
 
 # --- Flask-Admin Initialization ---
@@ -259,57 +243,10 @@ def clear_global_proxy_env():
         del os.environ['HTTPS_PROXY']
     print("Cleared environment proxies.")
 
-# --- Helper function to send Telegram message (not currently used by frontend) ---
-# This part was in the previous app.py. Keeping it for consistency if it was intended.
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
-
-def send_telegram_message(message):
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        print("Telegram bot token or chat ID is not configured. Skipping Telegram notification.")
-        return False
-
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    payload = {
-        'chat_id': TELEGRAM_CHAT_ID,
-        'text': message,
-        'parse_mode': 'HTML'
-    }
-    try:
-        response = requests.post(url, data=payload, timeout=5)
-        response.raise_for_status()
-        print(f"Telegram notification sent successfully! Status: {response.status_code}")
-        return True
-    except requests.exceptions.Timeout:
-        print("Telegram API request timed out.")
-    except requests.exceptions.RequestException as e:
-        print(f"Error sending Telegram notification: {e}")
-    except Exception as e:
-        print(f"An unexpected error occurred while sending Telegram notification: {e}")
-    return False
-
-
 # --- ROUTES ---
 @app.route('/')
 def index():
     return render_template('index.html')
-
-# NEW: Route to serve ads.txt directly from the root
-@app.route('/ads.txt')
-def serve_ads_txt():
-    # Construct the full path to the ads.txt file
-    # os.getcwd() gets the current working directory, which should be your project root
-    ads_txt_path = os.path.join(os.getcwd(), 'ads.txt')
-    
-    # Check if the file exists
-    if not os.path.exists(ads_txt_path):
-        # If the file doesn't exist, return a 404 error
-        print(f"ads.txt not found at: {ads_txt_path}")
-        abort(404) # Flask's way to return a 404 Not Found
-    
-    # Serve the file directly
-    return send_file(ads_txt_path, mimetype='text/plain')
-
 
 # Route for the main tools page
 @app.route('/tools')
@@ -320,7 +257,6 @@ def tools_list_page():
 @app.route('/tools/video-idea-generator')
 def video_idea_generator_page():
     return render_template('video_idea_generator.html')
-
 
 @app.route('/tools/seo-title-description-optimizer')
 def seo_title_description_optimizer_page():
@@ -405,7 +341,7 @@ def fetch_subtitles():
     except requests.exceptions.RequestException as e:
         print(f"Network or proxy error fetching subtitles: {e}")
         return jsonify({"success": False, "message": "A network or proxy error occurred. Please try again or check proxy settings."}), 503
-    except Exception as e:
+    except Exception as e: # Corrected: 'a' changed to 'as e'
         print(f"Error fetching subtitles: {e}")
         return jsonify({"success": False, "message": "An unexpected error occurred while fetching subtitle info."}), 500
     finally:
@@ -521,7 +457,7 @@ def register():
 
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, user_type='regular') # Default new users to 'regular'
+        user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -595,7 +531,7 @@ if __name__ == '__main__':
             admin_email = os.getenv('ADMIN_DEFAULT_EMAIL', 'admin@example.com')
             admin_password = os.getenv('ADMIN_DEFAULT_PASSWORD', 'password') # CHANGE THIS IN PRODUCTION!
 
-            new_admin = User(username=admin_username, email=admin_email, user_type='admin') # Set user_type for admin
+            new_admin = User(username=admin_username, email=admin_email)
             new_admin.set_password(admin_password)
             db.session.add(new_admin)
             db.session.commit()

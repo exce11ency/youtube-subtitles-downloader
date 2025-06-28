@@ -28,6 +28,30 @@
         </div>
 
         <!-- Обертка для Google Translate Element (расположение остается здесь для совместимости) -->
+        <!-- Агрессивное скрытие для Google Translate Element, если он все равно появляется -->
+        <style>
+            #google-translate-wrapper {
+                position: absolute;
+                left: -9999px;
+                top: 0;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                z-index: -1;
+            }
+            .goog-te-gadget,
+            .goog-te-banner-frame,
+            .goog-tooltip-wrapper,
+            .goog-tooltip,
+            #goog-gt-tt {
+                display: none !important;
+            }
+            body > .skiptranslate {
+                display: none !important;
+            }
+            /* Если вы ранее добавляли .ad-placeholder стили в header.html, они могут быть здесь */
+            /* .ad-placeholder { ... } */
+        </style>
         <div id="google-translate-wrapper">
             <div id="google_translate_element"></div>
         </div>

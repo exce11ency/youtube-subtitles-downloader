@@ -26,6 +26,10 @@
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+    <!-- Google AdSense - ОСНОВНОЙ КОД (Ваш pub-ID теперь здесь) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1523592243681550"
+     crossorigin="anonymous"></script>
+
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -60,18 +64,27 @@
             overflow: hidden;
             z-index: -1;
         }
-        /* Style for advertisement placeholders */
-        .ad-placeholder {
-            background-color: #333; /* Dark gray for ad areas */
-            border: 1px dashed #555; /* Dashed border to indicate placeholder */
-            color: #ccc;
-            text-align: center;
-            padding: 20px;
+        /* Стили для контейнеров рекламы, чтобы AdSense мог определить размеры (эти стили будут работать даже без AdSense блоков) */
+        .adsbygoogle-container {
+            width: 100%; /* Занимает всю доступную ширину */
+            min-height: 100px; /* Минимальная высота для видимости плейсхолдера */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-top: 30px;
             margin-bottom: 30px;
+            /* Стилизация для лучшей видимости, пока реклама не загрузится */
+            background-color: #333; /* Темный серый фон */
+            border: 1px dashed #555; /* Пунктирная граница */
+            color: #ccc;
+            text-align: center;
             font-size: 1.1em;
             font-style: italic;
             border-radius: 8px;
+            overflow: hidden; /* Добавлено для обеспечения корректного контекста макета */
+            box-sizing: border-box; /* Учитывает padding и border в общей ширине/высоте */
+            padding: 5px; /* Добавлен padding для лучшего определения размеров */
+            position: relative; /* Добавлено относительное позиционирование */
         }
     </style>
 </head>
@@ -85,9 +98,9 @@
                 Insights, tips, and news on YouTube tools, content creation, and subtitle management.
             </p>
 
-            <!-- Advertisement Placeholder Top -->
-            <div class="ad-placeholder">
-                Advertisement Area (728x90 or similar)
+            <!-- AdSense Ad Unit 1 - Временно пустой для верификации. Будет добавлен после одобрения сайта. -->
+            <div class="adsbygoogle-container">
+                 <!-- Ad content will appear here after AdSense approval -->
             </div>
 
             <div class="space-y-8">
@@ -109,9 +122,9 @@
                 {% endif %}
             </div>
 
-            <!-- Advertisement Placeholder Bottom -->
-            <div class="ad-placeholder">
-                Advertisement Area (728x90 or similar)
+            <!-- AdSense Ad Unit 2 - Временно пустой для верификации. Будет добавлен после одобрения сайта. -->
+            <div class="adsbygoogle-container">
+                 <!-- Ad content will appear here after AdSense approval -->
             </div>
         </div>
     </main>

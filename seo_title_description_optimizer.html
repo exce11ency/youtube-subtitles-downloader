@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube SEO Title & Description Optimizer | YT Growth - Boost Video Rank</title>
-    <meta name="description" content="Optimize your YouTube video titles and descriptions for higher search rankings. Our AI-powered tool helps you craft compelling, keyword-rich content to increase video visibility and audience reach.">
+    <title>SEO Title & Description Optimizer | YT Growth</title>
+    <meta name="description" content="Optimize your YouTube video titles and descriptions for better search ranking and visibility with YT Growth's AI tool.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=YT" type="image/png">
 
     <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
-    <!-- YOUR ACTUAL MEASUREMENT ID IS 'G-TQ5W6J1PGB' -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -15,6 +17,18 @@
       gtag('js', new Date());
       gtag('config', 'G-TQ5W6J1PGB');
     </script>
+
+    <!-- Google AdSense - ОСНОВНОЙ КОД (Ваш pub-ID теперь здесь) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1523592243681550"
+     crossorigin="anonymous"></script>
+
+    <!-- Google Translate Element -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: true}, 'google_translate_element');
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,6 +38,38 @@
             background-color: #0f0f0f; /* Deep dark background */
             color: #e0e0e0;
         }
+        /* Soft hiding for Google Translate widget */
+        #google-translate-wrapper {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            z-index: -1;
+        }
+        /* Стили для контейнеров рекламы, чтобы AdSense мог определить размеры (эти стили будут работать даже без AdSense блоков) */
+        .adsbygoogle-container {
+            width: 100%; /* Занимает всю доступную ширину */
+            min-height: 100px; /* Минимальная высота для видимости плейсхолдера */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            /* Стилизация для лучшей видимости, пока реклама не загрузится */
+            background-color: #333; /* Темный серый фон */
+            border: 1px dashed #555; /* Пунктирная граница */
+            color: #ccc;
+            text-align: center;
+            font-size: 1.1em;
+            font-style: italic;
+            border-radius: 8px;
+            overflow: hidden; /* Добавлено для обеспечения корректного контекста макета */
+            box-sizing: border-box; /* Учитывает padding и border в общей ширине/высоте */
+            padding: 5px; /* Добавлен padding для лучшего определения размеров */
+            position: relative; /* Добавлено относительное позиционирование */
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
@@ -32,11 +78,11 @@
     <main class="flex-grow py-16 px-4">
         <div class="container mx-auto max-w-4xl bg-[#1A1A1A] p-8 md:p-12 rounded-xl shadow-2xl border border-[#2A2A2A]">
             <div class="text-center mb-10">
-                <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
                     YouTube SEO Title & Description Optimizer
                 </h1>
                 <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-                    Craft perfect, SEO-optimized titles and descriptions that make your YouTube videos rank higher and attract more viewers.
+                    Boost your video's visibility! Get AI-powered suggestions for optimized titles and descriptions.
                 </p>
             </div>
 
@@ -44,47 +90,62 @@
                 <p class="text-lg text-gray-300">
                     This tool is currently under development. Stay tuned for its launch!
                 </p>
-                <a href="/" class="mt-4 inline-block px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-md shadow-lg hover:from-purple-700 hover:to-pink-700 transition duration-200 transform hover:scale-105">
+                <a href="/tools" class="mt-4 inline-block px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-md shadow-lg hover:from-purple-700 hover:to-pink-700 transition duration-200 transform hover:scale-105">
                     Back to Main Tools
                 </a>
             </div>
 
-            <!-- Detailed SEO Content Section for Title & Description Optimizer -->
+            <!-- AdSense Ad Unit 1 - Временно пустой для верификации. Будет добавлен после одобрения сайта. -->
+            <div class="adsbygoogle-container">
+                 <!-- Ad content will appear here after AdSense approval -->
+            </div>
+
+            <!-- Detailed SEO Content Section for SEO Optimizer -->
             <div class="text-left mt-12">
-                <h2 class="text-4xl font-extrabold text-white mb-6">Master YouTube SEO with Optimized Video Titles and Descriptions</h2>
+                <h2 class="text-4xl font-extrabold text-white mb-6">Master YouTube SEO with Optimized Titles & Descriptions</h2>
                 <p class="text-lg text-gray-400 mb-6">
-                    The title and description of your YouTube video are critical for discoverability. Our upcoming **YouTube SEO Title & Description Optimizer** will be an AI-powered tool designed to help you generate compelling, keyword-rich metadata that not only attracts clicks but also significantly improves your video's ranking in YouTube search results.
+                    Optimizing your YouTube video titles and descriptions is fundamental for discoverability. Our upcoming **YouTube SEO Title & Description Optimizer** will leverage advanced AI to help you craft compelling, keyword-rich metadata that ranks higher in search results and attracts more viewers. This tool will analyze your video content and target keywords to suggest the most effective titles and descriptions.
                 </p>
 
-                <h3 class="text-3xl font-semibold text-white mb-4">How Our AI Helps Your Videos Get Discovered (Coming Soon)</h3>
+                <!-- AdSense Ad Unit 2 - Временно пустой для верификации. Будет добавлен после одобрения сайта. -->
+                <div class="adsbygoogle-container">
+                     <!-- Ad content will appear here after AdSense approval -->
+                </div>
+
+                <h3 class="text-3xl font-semibold text-white mb-4">How Our AI Optimizer Works (Coming Soon)</h3>
                 <p class="text-gray-400 mb-6">
-                    Our **AI optimizer for YouTube SEO** analyzes trending keywords, competitor content, and audience search behavior to suggest titles that grab attention and descriptions that provide essential context and keywords for algorithms. This tool will ensure your videos are not just found, but also understood by both viewers and YouTube's ranking system.
+                    Our **AI-powered SEO optimizer** will take your raw video topic or a draft title/description and provide intelligent suggestions. It will focus on incorporating relevant keywords naturally, optimizing for click-through rates, and ensuring your metadata is appealing to both YouTube's algorithm and potential viewers. You'll get actionable recommendations to improve your video's visibility.
                 </p>
 
-                <h3 class="text-3xl font-semibold text-white mb-4">Key Benefits for YouTube Creators:</h3>
+                <h3 class="text-3xl font-semibold text-white mb-4">Benefits for YouTube Creators:</h3>
                 <ul class="list-disc list-inside text-gray-400 space-y-2 mb-6">
-                    <li>**Increased Visibility:** Rank higher in search results.</li>
-                    <li>**More Clicks:** Craft titles that entice viewers.</li>
-                    <li>**Enhanced Discoverability:** Reach a wider, more engaged audience.</li>
-                    <li>**Time-Saving:** Automate the tedious process of keyword research and optimization.</li>
-                    <li>**Competitive Edge:** Outperform rivals with smarter metadata.</li>
+                    <li>**Higher Rankings:** Improve your video's position in YouTube search results.</li>
+                    <li>**Increased Clicks:** Craft compelling titles that entice viewers to click.</li>
+                    <li>**Better Discoverability:** Reach a wider audience by optimizing for relevant searches.</li>
+                    <li>**Time-Saving:** Generate effective metadata quickly, without manual research.</li>
+                    <li>**Competitive Edge:** Stay ahead by using AI-driven insights for your SEO strategy.</li>
                 </ul>
 
                 <h2 class="text-4xl font-extrabold text-white mb-6 mt-10">Frequently Asked Questions (FAQ)</h2>
                 <div class="space-y-4 text-gray-400">
                     <div>
-                        <h3 class="text-xl font-semibold text-white mb-2">Q: Why are video titles and descriptions so important for YouTube SEO?</h3>
-                        <p>A: Titles and descriptions are the primary way YouTube's algorithm understands your video's content. They help match your video with relevant search queries and recommend it to interested viewers, directly impacting your video's visibility and reach.</p>
+                        <h3 class="text-xl font-semibold text-white mb-2">Q: How does this tool help with YouTube SEO?</h3>
+                        <p>A: It analyzes your video's topic and target audience to suggest titles and descriptions that include high-ranking keywords, improving your video's chances of appearing in search results and recommended videos.</p>
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold text-white mb-2">Q: Can this tool optimize for specific keywords?</h3>
-                        <p>A: Yes, you will be able to define your target keywords, and the optimizer will help integrate them naturally and effectively into your titles and descriptions for maximum SEO impact.</p>
+                        <h3 class="text-xl font-semibold text-white mb-2">Q: Can I optimize existing video metadata?</h3>
+                        <p>A: Yes, the tool will be designed to allow you to input existing titles and descriptions and receive suggestions for improvement, helping you refresh older content.</p>
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold text-white mb-2">Q: Is this tool suitable for all types of YouTube channels?</h3>
-                        <p>A: Absolutely! Whether you're a gaming channel, vlogger, educator, or business, effective SEO is universal. Our tool is designed to benefit creators across all niches.</p>
+                        <h3 class="text-xl font-semibold text-white mb-2">Q: When will this tool be available?</h3>
+                        <p>A: The YouTube SEO Title & Description Optimizer is currently in active development. We're working hard to bring it to you soon!</p>
                     </div>
                 </div>
+            </div>
+
+            <!-- AdSense Ad Unit 3 - Временно пустой для верификации. Будет добавлен после одобрения сайта. -->
+            <div class="adsbygoogle-container">
+                 <!-- Ad content will appear here after AdSense approval -->
             </div>
         </div>
     </main>

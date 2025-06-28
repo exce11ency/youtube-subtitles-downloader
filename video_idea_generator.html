@@ -18,11 +18,6 @@
       gtag('config', 'G-TQ5W6J1PGB');
     </script>
 
-  <!-- Google AdSense - ОСНОВНОЙ КОД (Ваш pub-ID теперь здесь) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1523592243681550"
-     crossorigin="anonymous"></script>
-
-
     <!-- Google Translate Element -->
     <script type="text/javascript">
     function googleTranslateElementInit() {
@@ -30,6 +25,10 @@
     }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Google AdSense - MAIN CODE (Your pub-ID is here now) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1523592243681550"
+     crossorigin="anonymous"></script>
 
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -39,28 +38,49 @@
             background-color: #0f0f0f; /* Deep dark background */
             color: #e0e0e0;
         }
-        /* Soft hiding for Google Translate widget */
-        #google-translate-wrapper {
-            position: absolute;
-            left: -9999px;
-            top: 0;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            z-index: -1;
+        /* Aggressive hiding for Google Translate Element */
+        #google-translate-wrapper,
+        .goog-te-gadget,
+        .goog-te-banner-frame,
+        .goog-tooltip-wrapper,
+        .goog-tooltip,
+        #goog-gt-tt {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
+            position: absolute !important;
+            left: -9999px !important;
+            top: -9999px !important;
+            z-index: -1 !important;
+        }
+        /* Ensure any direct body children from translate are hidden */
+        body > .skiptranslate {
+            display: none !important;
+            visibility: hidden !important;
         }
         /* Style for advertisement placeholders */
-        .ad-placeholder {
-            background-color: #333; /* Dark gray for ad areas */
-            border: 1px dashed #555; /* Dashed border to indicate placeholder */
-            color: #ccc;
-            text-align: center;
-            padding: 20px;
+        .adsbygoogle-container {
+            width: 100%; /* Full width */
+            min-height: 100px; /* Minimum height for placeholder */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-top: 30px;
             margin-bottom: 30px;
+            /* Styling for better visibility while ads are not loaded */
+            background-color: #333; /* Dark gray background */
+            border: 1px dashed #555; /* Dashed border */
+            color: #ccc;
+            text-align: center;
             font-size: 1.1em;
             font-style: italic;
             border-radius: 8px;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 5px;
+            position: relative;
         }
     </style>
 </head>
@@ -79,43 +99,56 @@
             </div>
 
             <div class="bg-[#2A2A2A] p-6 rounded-lg shadow-inner border border-[#3A3A3A] mb-8 text-center">
-                <p class="text-lg text-gray-300">
-                    This tool is currently under development. Stay tuned for its launch!
+                <p class="text-lg text-gray-300 mb-4">
+                    This tool is currently under development. Want early access or to be notified upon launch?
                 </p>
-                <a href="/" class="mt-4 inline-block px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-md shadow-lg hover:from-purple-700 hover:to-pink-700 transition duration-200 transform hover:scale-105">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <input
+                        type="email"
+                        id="notifyEmailInput"
+                        placeholder="Your email address"
+                        class="px-5 py-3 bg-[#1A1A1A] border border-[#3A3A3A] rounded-md text-gray-100 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200 text-base"
+                    >
+                    <button
+                        id="notifyMeBtn"
+                        class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-md shadow-lg hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 focus:ring-offset-[#2A2A2A] transition duration-200 transform hover:scale-105 flex-shrink-0"
+                    >
+                        Notify Me!
+                    </button>
+                </div>
+                <p id="notifyMessage" class="text-sm mt-3 text-green-400 hidden">
+                    <!-- Notification message will appear here -->
+                </p>
+                <a href="/" class="mt-4 inline-block px-6 py-2 bg-gray-600 text-white font-semibold rounded-md shadow-lg hover:bg-gray-700 transition duration-200 transform hover:scale-105">
                     Back to Main Tools
                 </a>
             </div>
 
-            <!-- Advertisement Placeholder Top -->
-            <div class="ad-placeholder">
-                Advertisement Area (Top)
-            </div>
+            <!-- AdSense Ad Unit 1 - Empty for verification -->
+            <div class="adsbygoogle-container"></div>
 
             <!-- Detailed SEO Content Section for Video Idea Generator -->
             <div class="text-left mt-12">
                 <h2 class="text-4xl font-extrabold text-white mb-6">Unlock Your Channel's Potential with Trending Video Ideas</h2>
                 <p class="text-lg text-gray-400 mb-6">
-                    Finding fresh, engaging content ideas is crucial for YouTube channel growth. Our upcoming **YouTube Video Idea Generator** will simplify this process by leveraging advanced AI to analyze vast amounts of data from thousands of popular videos within your niche. This means you'll get insights into what's currently trending, what resonates with audiences, and what topics have high search potential.
+                    Finding fresh, engaging content ideas is crucial for YouTube channel growth. Our upcoming <strong>YouTube Video Idea Generator</strong> will simplify this process by leveraging advanced AI to analyze vast amounts of data from thousands of popular videos within your niche. This means you'll get insights into what's currently trending, what resonates with audiences, and what topics have high search potential.
                 </p>
 
-                <!-- Advertisement Placeholder Middle -->
-                <div class="ad-placeholder">
-                    Advertisement Area (Middle)
-                </div>
+                <!-- AdSense Ad Unit 2 - Empty for verification -->
+                <div class="adsbygoogle-container"></div>
 
                 <h3 class="text-3xl font-semibold text-white mb-4">How Our AI-Powered Tool Works (Coming Soon)</h3>
                 <p class="text-gray-400 mb-6">
-                    Our **AI video idea generator** will intelligently analyze trending topics, popular keywords, viewer demographics, and engagement metrics to suggest unique and relevant video concepts tailored to your channel. You'll be able to input your niche or a broad topic, and the tool will provide a list of high-potential video ideas, complete with estimated search volume and competition levels. This feature is designed to save you hours of manual research.
+                    Our <strong>AI video idea generator</strong> will intelligently analyze trending topics, popular keywords, viewer demographics, and engagement metrics to suggest unique and relevant video concepts tailored to your channel. You'll be able to input your niche or a broad topic, and the tool will provide a list of high-potential video ideas, complete with estimated search volume and competition levels. This feature is designed to save you hours of manual research.
                 </p>
 
                 <h3 class="text-3xl font-semibold text-white mb-4">Benefits for YouTube Creators:</h3>
                 <ul class="list-disc list-inside text-gray-400 space-y-2 mb-6">
-                    <li>**Save Time:** Instantly generate a multitude of relevant ideas.</li>
-                    <li>**Stay Relevant:** Always know what's trending in your community.</li>
-                    <li>**Increase Engagement:** Create content that truly resonates with your audience.</li>
-                    <li>**Boost SEO:** Get ideas that naturally align with high-volume search terms.</li>
-                    <li>**Overcome Creator's Block:** Never struggle for your next video topic.</li>
+                    <li><strong>Save Time:</strong> Instantly generate a multitude of relevant ideas.</li>
+                    <li><strong>Stay Relevant:</strong> Always know what's trending in your community.</li>
+                    <li><strong>Increase Engagement:</strong> Create content that truly resonates with your audience.</li>
+                    <li><strong>Boost SEO:</strong> Get ideas that naturally align with high-volume search terms.</li>
+                    <li><strong>Overcome Creator's Block:</strong> Never struggle for your next video topic.</li>
                 </ul>
 
                 <h2 class="text-4xl font-extrabold text-white mb-6 mt-10">Frequently Asked Questions (FAQ)</h2>
@@ -135,13 +168,45 @@
                 </div>
             </div>
 
-            <!-- Advertisement Placeholder Bottom -->
-            <div class="ad-placeholder">
-                Advertisement Area (Bottom)
-            </div>
+            <!-- AdSense Ad Unit 3 - Empty for verification -->
+            <div class="adsbygoogle-container"></div>
         </div>
     </main>
 
     {% include 'footer.html' %} <!-- Include the common footer -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const notifyEmailInput = document.getElementById('notifyEmailInput');
+            const notifyMeBtn = document.getElementById('notifyMeBtn');
+            const notifyMessage = document.getElementById('notifyMessage');
+
+            // Function to validate email format
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            notifyMeBtn.addEventListener('click', () => {
+                const email = notifyEmailInput.value.trim();
+                notifyMessage.classList.add('hidden'); // Hide previous message
+                
+                if (isValidEmail(email)) {
+                    // Simulation of submission (without actual backend call)
+                    console.log(`User wants to be notified: ${email}`); // For console debugging
+                    notifyMessage.textContent = 'Thank you for your interest! We will notify you upon launch.';
+                    notifyMessage.classList.remove('hidden');
+                    notifyMessage.classList.remove('text-red-400');
+                    notifyMessage.classList.add('text-green-400');
+                    notifyEmailInput.value = ''; // Clear input field on success
+                } else {
+                    notifyMessage.textContent = 'Please enter a valid email address.';
+                    notifyMessage.classList.remove('hidden');
+                    notifyMessage.classList.remove('text-green-400');
+                    notifyMessage.classList.add('text-red-400');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

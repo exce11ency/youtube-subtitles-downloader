@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ | YT Growth</title>
-    <meta name="description" content="Frequently asked questions about YT Growth tools, subtitle downloads, and YouTube optimization.">
+    <title>Frequently Asked Questions | YT Growth</title>
+    <meta name="description" content="Find answers to common questions about YT Growth's YouTube subtitle downloader and upcoming AI tools. Learn more about our free and premium features.">
 
     <!-- Favicon -->
     <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=YT" type="image/png">
@@ -26,165 +26,146 @@
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+    <!-- Google AdSense - ОСНОВНОЙ КОД (Ваш pub-ID теперь здесь) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1523592243681550"
+     crossorigin="anonymous"></script>
+
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f0f0f;
+            background-color: #0f0f0f; /* Deep dark background */
             color: #e0e0e0;
         }
-        #google-translate-wrapper {
-            position: absolute;
-            left: -9999px;
-            top: 0;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            z-index: -1;
-        }
-        .accordion-header {
-            cursor: pointer;
+        /* Стили для контейнеров рекламы, чтобы AdSense мог определить размеры */
+        .adsbygoogle-container {
+            width: 100%; /* Занимает всю доступную ширину */
+            min-height: 100px; /* Минимальная высота для видимости плейсхолдера */
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        .accordion-content.open {
-            max-height: 300px; /* Adjust as needed */
-            transition: max-height 0.5s ease-in;
-        }
-        /* Style for advertisement placeholders */
-        .ad-placeholder {
-            background-color: #333;
-            border: 1px dashed #555;
-            color: #ccc;
-            text-align: center;
-            padding: 20px;
+            justify-content: center;
             margin-top: 30px;
             margin-bottom: 30px;
+            /* Стилизация для лучшей видимости, пока реклама не загрузится */
+            background-color: #333; /* Темный серый фон */
+            border: 1px dashed #555; /* Пунктирная граница */
+            color: #ccc;
+            text-align: center;
             font-size: 1.1em;
             font-style: italic;
             border-radius: 8px;
+            overflow: hidden; /* Добавлено для обеспечения корректного контекста макета */
+            box-sizing: border-box; /* Учитывает padding и border в общей ширине/высоте */
+            padding: 5px; /* Добавлен padding для лучшего определения размеров */
+            position: relative; /* Добавлено относительное позиционирование */
         }
     </style>
 </head>
 <body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
-    {% include 'header.html' %}
+    {% include 'header.html' %} <!-- Include the common header -->
 
     <main class="flex-grow py-16 px-4">
         <div class="container mx-auto max-w-4xl bg-[#1A1A1A] p-8 md:p-12 rounded-xl shadow-2xl border border-[#2A2A2A]">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-8 text-center">Frequently Asked Questions</h1>
-            <p class="text-xl text-gray-400 mb-10 text-center">
-                Find answers to common questions about our YouTube tools and services.
-            </p>
-
-            <!-- Advertisement Placeholder Top -->
-            <div class="ad-placeholder">
-                Advertisement Area (728x90 or similar)
+            <div class="text-center mb-10">
+                <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+                    Frequently Asked Questions
+                </h1>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Find quick answers to your questions about YT Growth and our tools.
+                </p>
             </div>
 
-            <div class="space-y-6">
+            <!-- AdSense Ad Unit 1 (ЗАМЕНИТЕ 'YOUR-AD-SLOT-ID-1' на ваш реальный ID рекламного блока из AdSense) -->
+            <div class="adsbygoogle-container">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-1523592243681550"
+                     data-ad-slot="YOUR-AD-SLOT-ID-1"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+            <div class="space-y-8">
                 <!-- FAQ Item 1 -->
-                <div class="bg-[#2A2A2A] p-6 rounded-lg shadow-md border border-[#3A3A3A]">
-                    <div class="accordion-header text-xl font-semibold text-white">
-                        <span>How do I download subtitles?</span>
-                        <span>+</span>
-                    </div>
-                    <div class="accordion-content mt-4 text-gray-300 text-lg">
-                        <p>Simply paste the YouTube video URL into the Subtitle Downloader tool on our homepage. We will fetch all available subtitle tracks for that video, and you can download them in TXT or SRT format.</p>
-                    </div>
+                <div class="bg-[#2A2A2A] rounded-lg p-6 shadow-inner border border-[#3A3A3A]">
+                    <h3 class="text-2xl font-semibold text-white mb-3">
+                        Q: Is the YouTube Subtitle Downloader completely free to use?
+                    </h3>
+                    <p class="text-gray-300">
+                        A: Yes, our YouTube Subtitle Downloader is currently completely free. We aim to keep basic subtitle download functionality free forever, with potential premium features for advanced users in the future.
+                    </p>
                 </div>
 
                 <!-- FAQ Item 2 -->
-                <div class="bg-[#2A2A2A] p-6 rounded-lg shadow-md border border-[#3A3A3A]">
-                    <div class="accordion-header text-xl font-semibold text-white">
-                        <span>Are all YouTube videos supported?</span>
-                        <span>+</span>
-                    </div>
-                    <div class="accordion-content mt-4 text-gray-300 text-lg">
-                        <p>Our tool supports videos that have public subtitles, either uploaded by the creator or auto-generated by YouTube. If subtitles are disabled or private for a video, we won't be able to retrieve them.</p>
-                    </div>
-                </div>
-
-                <!-- Advertisement Placeholder Middle 1 -->
-                <div class="ad-placeholder">
-                    Advertisement Area (300x250 or similar)
+                <div class="bg-[#2A2A2A] rounded-lg p-6 shadow-inner border border-[#3A3A3A]">
+                    <h3 class="text-2xl font-semibold text-white mb-3">
+                        Q: What subtitle formats can I download?
+                    </h3>
+                    <p class="text-gray-300">
+                        A: You can download subtitles in two popular formats: SRT (SubRip Subtitle) and TXT (Plain Text). SRT files include timestamps, while TXT files provide the raw text transcript.
+                    </p>
                 </div>
 
                 <!-- FAQ Item 3 -->
-                <div class="bg-[#2A2A2A] p-6 rounded-lg shadow-md border border-[#3A3A3A]">
-                    <div class="accordion-header text-xl font-semibold text-white">
-                        <span>What's the difference between TXT and SRT formats?</span>
-                        <span>+</span>
-                    </div>
-                    <div class="accordion-content mt-4 text-gray-300 text-lg">
-                        <p>TXT format provides a plain text transcript of the subtitles, while SRT (SubRip Subtitle) format includes timestamps, allowing the subtitles to sync perfectly with the video when used in a video player or editing software.</p>
-                    </div>
+                <div class="bg-[#2A2A2A] rounded-lg p-6 shadow-inner border border-[#3A3A3A]">
+                    <h3 class="text-2xl font-semibold text-white mb-3">
+                        Q: Can I download subtitles from any YouTube video?
+                    </h3>
+                    <p class="text-gray-300">
+                        A: Our tool can download subtitles from any public YouTube video that has either automatically generated captions or user-contributed subtitles enabled. Private videos or videos where the creator has disabled captions cannot be downloaded.
+                    </p>
+                </div>
+
+                <!-- AdSense Ad Unit 2 (ЗАМЕНИТЕ 'YOUR-AD-SLOT-ID-2' на ваш реальный ID рекламного блока из AdSense) -->
+                <div class="adsbygoogle-container">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1523592243681550"
+                         data-ad-slot="YOUR-AD-SLOT-ID-2"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
 
                 <!-- FAQ Item 4 -->
-                <div class="bg-[#2A2A2A] p-6 rounded-lg shadow-md border border-[#3A3A3A]">
-                    <div class="accordion-header text-xl font-semibold text-white">
-                        <span>Is there a limit to how many subtitles I can download?</span>
-                        <span>+</span>
-                    </div>
-                    <div class="accordion-content mt-4 text-gray-300 text-lg">
-                        <p>For free users, there might be certain usage limits or rate limits. Our paid plans typically offer unlimited downloads and access to all tools without restrictions.</p>
-                    </div>
-                </div>
-
-                <!-- Advertisement Placeholder Middle 2 -->
-                <div class="ad-placeholder">
-                    Advertisement Area (300x250 or similar)
+                <div class="bg-[#2A2A2A] rounded-lg p-6 shadow-inner border border-[#3A3A3A]">
+                    <h3 class="text-2xl font-semibold text-white mb-3">
+                        Q: What are the upcoming AI tools?
+                    </h3>
+                    <p class="text-gray-300">
+                        A: We are actively developing powerful AI-driven tools including a YouTube Video Idea Generator, an SEO Title & Description Optimizer, and a YouTube Keyword Research Tool. These will help you elevate your content strategy significantly.
+                    </p>
                 </div>
 
                 <!-- FAQ Item 5 -->
-                <div class="bg-[#2A2A2A] p-6 rounded-lg shadow-md border border-[#3A3A3A]">
-                    <div class="accordion-header text-xl font-semibold text-white">
-                        <span>Do you offer an API for developers?</span>
-                        <span>+</span>
-                    </div>
-                    <div class="accordion-content mt-4 text-gray-300 text-lg">
-                        <p>Yes, API access is available for our Business plan subscribers. This allows you to integrate our subtitle fetching and other tool functionalities directly into your own applications. Please refer to our Pricing page or contact support for more details.</p>
-                    </div>
+                <div class="bg-[#2A2A2A] rounded-lg p-6 shadow-inner border border-[#3A3A3A]">
+                    <h3 class="text-2xl font-semibold text-white mb-3">
+                        Q: How can I support the development of YT Growth?
+                    </h3>
+                    <p class="text-gray-300">
+                        A: We appreciate your support! You can find a donation option on our <a href="/pricing" class="text-purple-400 hover:underline">Pricing page</a>. Your contributions help us continue developing and improving these valuable tools.
+                    </p>
                 </div>
-            </div>
 
-            <!-- Advertisement Placeholder Bottom -->
-            <div class="ad-placeholder">
-                Advertisement Area (728x90 or similar)
+                <!-- FAQ Item 6 -->
+                <div class="bg-[#2A2A2A] rounded-lg p-6 shadow-inner border border-[#3A3A3A]">
+                    <h3 class="text-2xl font-semibold text-white mb-3">
+                        Q: Where can I report a bug or suggest a feature?
+                    </h3>
+                    <p class="text-300">
+                        A: We welcome your feedback! Please visit our <a href="/contact" class="text-purple-400 hover:underline">Contact page</a> to get in touch with our team.
+                    </p>
+                </div>
             </div>
         </div>
     </main>
 
-    {% include 'footer.html' %}
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const accordionHeaders = document.querySelectorAll('.accordion-header');
-
-            accordionHeaders.forEach(header => {
-                header.addEventListener('click', () => {
-                    const content = header.nextElementSibling; // Get the next sibling, which is the content div
-                    
-                    // Toggle the 'open' class for content visibility
-                    content.classList.toggle('open');
-                    
-                    // Change the '+' to '-' or vice versa
-                    const icon = header.querySelector('span:last-child');
-                    if (content.classList.contains('open')) {
-                        icon.textContent = '-';
-                    } else {
-                        icon.textContent = '+';
-                    }
-                });
-            });
-        });
-    </script>
+    {% include 'footer.html' %} <!-- Include the common footer -->
 </body>
 </html>

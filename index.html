@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free YouTube Subtitle Downloader | YT Growth - SRT & TXT Transcripts</title>
-    <meta name="description" content="Download YouTube subtitles for free in SRT & TXT. Get accurate, instant video transcripts and captions to boost learning, content creation, and accessibility with YT Growth tools.">
+    <title>Free YouTube Subtitle Downloader | YT Growth - SRT & TXT Transcripts</title> <!-- SEO Optimized Title -->
+    <meta name="description" content="Download YouTube subtitles for free in SRT & TXT. Get accurate, instant video transcripts and captions to boost learning, content creation, and accessibility with YT Growth tools."> <!-- SEO Optimized Description -->
 
     <!-- Favicon -->
     <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=YT" type="image/png">
 
     <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
+    <!-- YOUR ACTUAL MEASUREMENT ID IS 'G-TQ5W6J1PGB' -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -21,12 +22,13 @@
     <!-- Google Translate Element -->
     <script type="text/javascript">
     function googleTranslateElementInit() {
+      // Set pageLanguage to 'en' as the default/source language of the page content
       new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: true}, 'google_translate_element');
     }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-    <!-- Google AdSense - ОСНОВНОЙ КОД (Ваш pub-ID теперь здесь) -->
+    <!-- Google AdSense - MAIN CODE (Your pub-ID is here now) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1523592243681550"
      crossorigin="anonymous"></script>
 
@@ -35,7 +37,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f0f0f;
+            background-color: #0f0f0f; /* Deep dark background */
             color: #e0e0e0;
         }
         /* Custom scrollbar for subtitle display area */
@@ -43,26 +45,38 @@
             width: 8px;
         }
         .subtitle-results::-webkit-scrollbar-track {
-            background: #1a1a1a;
+            background: #1a1a1a; /* Darker track */
             border-radius: 4px;
         }
         .subtitle-results::-webkit-scrollbar-thumb {
-            background: #4a4a4a;
+            background: #4a4a4a; /* Medium gray */
             border-radius: 4px;
         }
         .subtitle-results::-webkit-scrollbar-thumb:hover {
-            background: #6a6a6a;
+            background: #6a6a6a; /* Lighter gray on hover */
         }
 
-        /* Soft hiding for Google Translate widget to avoid GA conflict */
-        #google-translate-wrapper {
-            position: absolute;
-            left: -9999px;
-            top: 0;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            z-index: -1;
+        /* Aggressive hiding for Google Translate Element */
+        #google-translate-wrapper,
+        .goog-te-gadget,
+        .goog-te-banner-frame,
+        .goog-tooltip-wrapper,
+        .goog-tooltip,
+        #goog-gt-tt {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
+            position: absolute !important;
+            left: -9999px !important;
+            top: -9999px !important;
+            z-index: -1 !important;
+        }
+        /* Ensure any direct body children from translate are hidden */
+        body > .skiptranslate {
+            display: none !important;
+            visibility: hidden !important;
         }
 
         /* Progress Bar Animation */
@@ -84,7 +98,7 @@
             padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
-            border-radius: 0.75rem;
+            border-radius: 0.75rem; /* rounded-lg */
         }
         .video-container iframe {
             position: absolute;
@@ -93,29 +107,34 @@
             width: 100%;
             height: 100%;
         }
-        /* Стили для контейнеров рекламы, чтобы AdSense мог определить размеры */
+        /* Style for advertisement placeholders */
         .adsbygoogle-container {
-            height: 100px; /* Фиксированная высота для рекламного блока */
-            width: 100%; /* Занимает всю доступную ширину */
+            width: 100%; /* Full width */
+            min-height: 100px; /* Minimum height for placeholder */
             display: flex;
             align-items: center;
             justify-content: center;
             margin-top: 30px;
             margin-bottom: 30px;
-            /* Стилизация для лучшей видимости, пока реклама не загрузится */
-            background-color: #333; /* Темный серый фон */
-            border: 1px dashed #555; /* Пунктирная граница */
+            /* Styling for better visibility while ads are not loaded */
+            background-color: #333; /* Dark gray background */
+            border: 1px dashed #555; /* Dashed border */
             color: #ccc;
             text-align: center;
             font-size: 1.1em;
             font-style: italic;
             border-radius: 8px;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 5px;
+            position: relative;
         }
     </style>
 </head>
 <body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
-    {% include 'header.html' %}
+    {% include 'header.html' %} <!-- Include the common header -->
 
+    <!-- Hero Section / Main Content Area - Dark, central container -->
     <main class="flex-grow flex items-center justify-center py-16 px-4">
         <div class="w-full max-w-4xl bg-[#1A1A1A] p-8 md:p-12 rounded-xl shadow-2xl border border-[#2A2A2A]">
             <div class="text-center mb-10">
@@ -151,19 +170,6 @@
                 </div>
             </div>
 
-            <!-- AdSense Ad Unit 1 (Рекламный блок, который вы получите из AdSense) -->
-            <div class="adsbygoogle-container">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-1523592243681550"
-                     data-ad-slot="YOUR-AD-SLOT-ID-1"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-
             <!-- Video Info Display (Embedded Video + Title) -->
             <div id="videoInfoDisplay" class="hidden flex flex-col items-center p-6 bg-[#2A2A2A] rounded-lg shadow-inner border border-[#3A3A3A] mb-6">
                 <div class="video-container mb-4 border border-[#3A3A3A] shadow-md">
@@ -172,6 +178,9 @@
                 <h3 id="videoTitle" class="text-xl font-semibold text-white text-center"></h3>
             </div>
 
+            <!-- AdSense Ad Unit 1: Just below the main form and video player -->
+            <div class="adsbygoogle-container"></div>
+
             <!-- Progress Bar -->
             <div id="progressBar" class="hidden w-full bg-[#1A1A1A] rounded-full h-3 mb-6 overflow-hidden">
                 <div class="progress-bar-gradient h-full rounded-full" style="width: 100%;"></div>
@@ -179,7 +188,7 @@
 
             <!-- Loading, Error, and Results Display -->
             <div id="loadingIndicator" class="hidden text-center text-purple-400 font-medium text-lg mb-6">
-                Loading available subtitles...
+                Fetching available subtitles...
             </div>
 
             <div id="errorDisplay" class="hidden mt-6 p-4 bg-red-900 border border-red-700 text-red-200 rounded-md relative text-base" role="alert">
@@ -197,46 +206,16 @@
                 </p>
             </div>
 
-            <!-- AdSense Ad Unit 2 (Рекламный блок, который вы получите из AdSense) -->
-            <div class="adsbygoogle-container">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-1523592243681550"
-                     data-ad-slot="YOUR-AD-SLOT-ID-2"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
+            <!-- AdSense Ad Unit 2: After subtitle results -->
+            <div class="mt-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300 adsbygoogle-container"></div>
         </div>
     </main>
 
-    <!-- AdSense Ad Unit 3 (Рекламный блок, который вы получите из AdSense) -->
+    <!-- AdSense Ad Unit 3: Row of multiple banners -->
     <div class="container mx-auto max-w-4xl px-4 py-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="adsbygoogle-container">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-1523592243681550"
-                     data-ad-slot="YOUR-AD-SLOT-ID-3"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-            <div class="adsbygoogle-container">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-1523592243681550"
-                     data-ad-slot="YOUR-AD-SLOT-ID-4"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
+            <div class="p-6 h-48 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300 flex items-center justify-center text-center text-xl adsbygoogle-container"></div>
+            <div class="p-6 h-48 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300 flex items-center justify-center text-center text-xl adsbygoogle-container"></div>
         </div>
     </div>
 
@@ -246,35 +225,25 @@
         <div class="container mx-auto text-left max-w-4xl">
             <h2 class="text-4xl font-extrabold text-white mb-6">Why Download YouTube Subtitles with YT Growth?</h2>
             <p class="text-lg text-gray-400 mb-6">
-                Our **free YouTube subtitle downloader** from YT Growth offers seamless functionality to instantly extract subtitles from any public YouTube video. Whether you need an **SRT YouTube downloader** or a simple **TXT transcript grabber**, our tool simplifies the process for everyone from content creators to students and researchers.
+                Our <strong>free YouTube subtitle downloader</strong> from YT Growth offers seamless functionality to instantly extract subtitles from any public YouTube video. Whether you need an <strong>SRT YouTube downloader</strong> or a simple <strong>TXT transcript grabber</strong>, our tool simplifies the process for everyone from content creators to students and researchers.
             </p>
 
-            <!-- AdSense Ad Unit 4 (Рекламный блок, который вы получите из AdSense) -->
-            <div class="adsbygoogle-container">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-1523592243681550"
-                     data-ad-slot="YOUR-AD-SLOT-ID-5"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
+            <!-- AdSense Ad Unit 4: Inside SEO content -->
+            <div class="my-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300 adsbygoogle-container"></div>
 
             <h3 class="text-3xl font-semibold text-white mb-4">Enhance Accessibility and Learning</h3>
             <p class="text-gray-400 mb-6">
-                **YouTube captions download** is essential for creating more accessible video content. For viewers, it allows those with hearing impairments to fully engage with your videos. For learners, converting **YouTube videos to text** provides a powerful study aid. You can easily review lectures, academic talks, or tutorials by searching keywords within the transcript, making note-taking more efficient and comprehensive. Our service ensures you **get YouTube transcript** files quickly and accurately.
+                <strong>YouTube captions download</strong> is essential for creating more accessible video content. For viewers, it allows those with hearing impairments to fully engage with your videos. For learners, converting <strong>YouTube videos to text</strong> provides a powerful study aid. You can easily review lectures, academic talks, or tutorials by searching keywords within the transcript, making note-taking more efficient and comprehensive. Our service ensures you <strong>get YouTube transcript</strong> files quickly and accurately.
             </p>
 
             <h3 class="text-3xl font-semibold text-white mb-4">Boost Your Content Creation & SEO Strategy</h3>
             <p class="text-gray-400 mb-6">
-                Content creators can significantly benefit from having accurate **YouTube video transcripts**. Repurpose your spoken content into blog posts, social media updates, or even e-books. Subtitles also play a crucial role in YouTube SEO; providing precise captions helps search engines understand your video's topic, leading to better discoverability. Utilize our tool to download **YouTube SRT** files and elevate your video SEO.
+                Content creators can significantly benefit from having accurate <strong>YouTube video transcripts</strong>. Repurpose your spoken content into blog posts, social media updates, or even e-books. Subtitles also play a crucial role in YouTube SEO; providing precise captions helps search engines understand your video's topic, leading to better discoverability. Utilize our tool to download <strong>YouTube SRT</strong> files and elevate your video SEO.
             </p>
 
             <h3 class="text-3xl font-semibold text-white mb-4">Simple, Fast, and Reliable Subtitle Extraction</h3>
             <p class="text-gray-400 mb-6">
-                We designed our platform to be the most user-friendly way to **download YouTube subtitles for free**. Forget complex software or lengthy processes. Simply paste the YouTube video URL, choose your preferred language and format (SRT or TXT), and your subtitle file is ready for download. Experience the convenience of a tool that delivers **accurate YouTube transcripts** quickly, every time.
+                We designed our platform to be the most user-friendly way to <strong>download YouTube subtitles for free</strong>. Forget complex software or lengthy processes. Simply paste the YouTube video URL, choose your preferred language and format (SRT or TXT), and your subtitle file is ready for download. Experience the convenience of a tool that delivers <strong>accurate YouTube transcripts</strong> quickly, every time.
             </p>
 
             <h2 class="text-4xl font-extrabold text-white mb-6 mt-10">Frequently Asked Questions (FAQ)</h2>
@@ -299,21 +268,10 @@
         </div>
     </section>
 
-    <!-- AdSense Ad Unit 5 (Рекламный блок, который вы получите из AdSense) -->
+    <!-- AdSense Ad Unit 5: Below AI Tools section, above footer -->
     <div class="container mx-auto max-w-4xl px-4 py-8 text-center">
-        <div class="adsbygoogle-container">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-1523592243681550"
-                 data-ad-slot="YOUR-AD-SLOT-ID-6"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
+        <div class="adsbygoogle-container"></div>
     </div>
-
 
     {% include 'footer.html' %} <!-- Include the common footer -->
 
@@ -328,12 +286,12 @@
             const subtitleList = document.getElementById('subtitleList');
             const noSubtitlesMessage = document.getElementById('noSubtitlesMessage');
             const videoInfoDisplay = document.getElementById('videoInfoDisplay');
-            const youtubeEmbed = document.getElementById('youtubeEmbed'); // Changed from videoThumbnail
+            const youtubeEmbed = document.getElementById('youtubeEmbed');
             const videoTitle = document.getElementById('videoTitle');
             const progressBar = document.getElementById('progressBar');
 
 
-            // Function to show error message
+            // Function to display error message
             function showErrorMessage(message) {
                 errorMessage.textContent = message;
                 errorDisplay.classList.remove('hidden');
@@ -356,18 +314,18 @@
 
             // Function to get YouTube embed URL
             function getYouTubeEmbedUrl(videoId) {
-                // Use autoplay=0 to keep video paused on embed, rel=0 to prevent related videos
+                // Use autoplay=0 to ensure video stays paused when embedded, rel=0 to prevent related videos from showing
                 return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
             }
 
-            // Placeholder for fetching actual video title (would require YouTube Data API call)
-            // For now, we'll use a generic placeholder or part of the URL.
+            // Placeholder function to get actual video title (would require YouTube Data API call)
+            // For now, use a generic placeholder or part of the URL.
             function getPlaceholderVideoTitle(url) {
                 try {
                     const urlObj = new URL(url);
                     // Simple extraction from URL if available, otherwise generic
-                    // Note: 'title' param is not a standard way to get YouTube video titles
-                    const titleParam = urlObj.searchParams.get('title'); 
+                    // Note: 'title' parameter is not the standard way to get YouTube video titles
+                    const titleParam = urlObj.searchParams.get('title');
                     return titleParam || 'Fetching video details...'; // Placeholder text
                 } catch (e) {
                     return 'Fetching video details...';
@@ -375,20 +333,14 @@
             }
 
 
-            // Event listener for the fetch button
+            // Event listener for the fetch subtitles button
             fetchSubtitlesBtn.addEventListener('click', async () => {
                 hideErrorMessage();
                 subtitleResultsDiv.classList.add('hidden');
                 subtitleList.innerHTML = ''; // Clear previous results
                 noSubtitlesMessage.classList.add('hidden');
                 
-                videoInfoDisplay.classList.add('hidden'); // Hide video info initially
-                youtubeEmbed.src = ''; // Clear previous embed src
-                videoTitle.textContent = ''; // Clear previous title
-                loadingIndicator.classList.remove('hidden'); // Show loading indicator
-                progressBar.classList.remove('hidden'); // Show progress bar
-
-
+                // Show video info and set embed URL immediately after valid input
                 const youtubeUrl = youtubeUrlInput.value.trim();
                 const videoId = getYouTubeVideoId(youtubeUrl);
 
@@ -396,40 +348,42 @@
                     showErrorMessage('Please enter a valid YouTube video URL.');
                     loadingIndicator.classList.add('hidden');
                     progressBar.classList.add('hidden'); // Hide progress bar
+                    // Ensure video info is hidden if URL is invalid
+                    videoInfoDisplay.classList.add('hidden');
                     return;
                 }
 
+                youtubeEmbed.src = getYouTubeEmbedUrl(videoId);
+                videoTitle.textContent = getPlaceholderVideoTitle(youtubeUrl); // Placeholder for video title
+                videoInfoDisplay.classList.remove('hidden'); // Show video info display immediately
+
+                loadingIndicator.classList.remove('hidden'); // Show loading indicator
+                progressBar.classList.remove('hidden'); // Show progress bar
+
                 // --- ACTUAL BACKEND INTEGRATION ---
-                // This is where we call our Flask backend.
                 const backendApiUrl = `/api/fetch_subtitles`; // Relative path to our Flask app
 
                 try {
                     const response = await fetch(backendApiUrl, {
-                        method: 'POST', // We use POST as defined in app.py
+                        method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json' // Tell the server we are sending JSON
+                            'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ videoId: videoId }) // Send videoId in JSON format
+                        body: JSON.stringify({ videoId: videoId })
                     });
 
-                    // Check if the response was successful
                     if (!response.ok) {
-                        const errorData = await response.json(); // Try to parse error message from backend
+                        const errorData = await response.json();
                         throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
                     }
 
-                    const data = await response.json(); // Parse the JSON response from the backend
+                    const data = await response.json();
 
-                    // In a real scenario, you'd fetch video title here from YouTube Data API
-                    // For now, update the placeholder if subtitles are found.
                     if (data.success && data.subtitles.length > 0) {
-                        // Assuming we could get a real title, update it here.
-                        // For this implementation, we keep the placeholder or set a generic text.
-                        videoTitle.textContent = 'Subtitles Ready!'; // Or a default if no actual title fetched
+                        videoTitle.textContent = 'Subtitles Ready!'; 
                         
                         data.subtitles.forEach(sub => {
                             const subtitleItem = document.createElement('div');
-                            // Styling to match reference: dark background, subtle border, light text
                             subtitleItem.className = 'flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-[#1A1A1A] rounded-md shadow-md border border-[#2A2A2A] text-gray-100';
                             subtitleItem.innerHTML = `
                                 <span class="font-medium mb-2 sm:mb-0">${sub.name} (${sub.lang.toUpperCase()}${sub.is_auto_generated ? ' - Auto' : ''})</span>
@@ -449,7 +403,7 @@
                         subtitleResultsDiv.classList.remove('hidden');
                     } else {
                         noSubtitlesMessage.classList.remove('hidden');
-                        subtitleResultsDiv.classList.remove('hidden'); // Show the results div even if no subtitles
+                        subtitleResultsDiv.classList.remove('hidden'); // Show results div even if no subtitles
                         videoInfoDisplay.classList.add('hidden'); // Hide video info if no subtitles found
                     }
                 } catch (error) {

@@ -6,8 +6,10 @@
     <title>YouTube Video Idea Generator | YT Growth - Find Trending Topics</title>
     <meta name="description" content="Generate fresh, trending video ideas for your YouTube channel with our AI-powered tool. Discover popular topics, analyze audience interest, and boost your content strategy for growth.">
 
+    <!-- Favicon -->
+    <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=YT" type="image/png">
+
     <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
-    <!-- YOUR ACTUAL MEASUREMENT ID IS 'G-TQ5W6J1PGB' -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -16,6 +18,14 @@
       gtag('config', 'G-TQ5W6J1PGB');
     </script>
 
+    <!-- Google Translate Element -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: true}, 'google_translate_element');
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -23,6 +33,29 @@
             font-family: 'Inter', sans-serif;
             background-color: #0f0f0f; /* Deep dark background */
             color: #e0e0e0;
+        }
+        /* Soft hiding for Google Translate widget */
+        #google-translate-wrapper {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            z-index: -1;
+        }
+        /* Style for advertisement placeholders */
+        .ad-placeholder {
+            background-color: #333; /* Dark gray for ad areas */
+            border: 1px dashed #555; /* Dashed border to indicate placeholder */
+            color: #ccc;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-style: italic;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -49,12 +82,22 @@
                 </a>
             </div>
 
+            <!-- Advertisement Placeholder Top -->
+            <div class="ad-placeholder">
+                Advertisement Area (Top)
+            </div>
+
             <!-- Detailed SEO Content Section for Video Idea Generator -->
             <div class="text-left mt-12">
                 <h2 class="text-4xl font-extrabold text-white mb-6">Unlock Your Channel's Potential with Trending Video Ideas</h2>
                 <p class="text-lg text-gray-400 mb-6">
                     Finding fresh, engaging content ideas is crucial for YouTube channel growth. Our upcoming **YouTube Video Idea Generator** will simplify this process by leveraging advanced AI to analyze vast amounts of data from thousands of popular videos within your niche. This means you'll get insights into what's currently trending, what resonates with audiences, and what topics have high search potential.
                 </p>
+
+                <!-- Advertisement Placeholder Middle -->
+                <div class="ad-placeholder">
+                    Advertisement Area (Middle)
+                </div>
 
                 <h3 class="text-3xl font-semibold text-white mb-4">How Our AI-Powered Tool Works (Coming Soon)</h3>
                 <p class="text-gray-400 mb-6">
@@ -85,6 +128,11 @@
                         <p>A: The YouTube Video Idea Generator is currently in active development. Please subscribe to our updates or follow our social media channels for launch announcements!</p>
                     </div>
                 </div>
+            </div>
+
+            <!-- Advertisement Placeholder Bottom -->
+            <div class="ad-placeholder">
+                Advertisement Area (Bottom)
             </div>
         </div>
     </main>

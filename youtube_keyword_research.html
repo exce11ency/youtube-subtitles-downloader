@@ -6,8 +6,10 @@
     <title>YouTube Keyword Research Tool | YT Growth - Find High-Ranking Keywords</title>
     <meta name="description" content="Discover the best keywords for your YouTube videos with YT Growth's research tool. Boost your video rankings, increase views, and optimize your content for YouTube search.">
 
+    <!-- Favicon -->
+    <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=YT" type="image/png">
+
     <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
-    <!-- YOUR ACTUAL MEASUREMENT ID IS 'G-TQ5W6J1PGB' -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -16,6 +18,14 @@
       gtag('config', 'G-TQ5W6J1PGB');
     </script>
 
+    <!-- Google Translate Element -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: true}, 'google_translate_element');
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -23,6 +33,29 @@
             font-family: 'Inter', sans-serif;
             background-color: #0f0f0f; /* Deep dark background */
             color: #e0e0e0;
+        }
+        /* Soft hiding for Google Translate widget */
+        #google-translate-wrapper {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            z-index: -1;
+        }
+        /* Style for advertisement placeholders */
+        .ad-placeholder {
+            background-color: #333; /* Dark gray for ad areas */
+            border: 1px dashed #555; /* Dashed border to indicate placeholder */
+            color: #ccc;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-style: italic;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -49,12 +82,22 @@
                 </a>
             </div>
 
+            <!-- Advertisement Placeholder Top -->
+            <div class="ad-placeholder">
+                Advertisement Area (Top)
+            </div>
+
             <!-- Detailed SEO Content Section for Keyword Research Tool -->
             <div class="text-left mt-12">
                 <h2 class="text-4xl font-extrabold text-white mb-6">Dominate YouTube Search with Effective Keyword Research</h2>
                 <p class="text-lg text-gray-400 mb-6">
                     Keywords are the backbone of YouTube SEO. Our upcoming **YouTube Keyword Research Tool** will empower creators to identify high-volume, low-competition keywords that can significantly boost their video's visibility. Stop guessing and start ranking with data-driven insights.
                 </p>
+
+                <!-- Advertisement Placeholder Middle -->
+                <div class="ad-placeholder">
+                    Advertisement Area (Middle)
+                </div>
 
                 <h3 class="text-3xl font-semibold text-white mb-4">How Our Smart Keyword Tool Will Work (Coming Soon)</h3>
                 <p class="text-gray-400 mb-6">
@@ -85,6 +128,11 @@
                         <p>A: Yes, our tool will be designed to work across a wide range of niches, providing relevant keyword suggestions whether you create content about gaming, education, lifestyle, or business.</p>
                     </div>
                 </div>
+            </div>
+
+            <!-- Advertisement Placeholder Bottom -->
+            <div class="ad-placeholder">
+                Advertisement Area (Bottom)
             </div>
         </div>
     </main>

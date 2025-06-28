@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} | YT Growth Blog</title> <!-- Dynamic title for individual post -->
+    <title>{{ post.title }} | YT Growth Blog</title> <!-- Dynamic title for individual post -->
     <meta name="description" content="{{ post.content[:160] }}"> <!-- Dynamic description for SEO -->
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=YT" type="image/png">
 
     <!-- Google Analytics (GA4) Global Site Tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
@@ -132,6 +135,19 @@
             background-color: #1f2937; /* Darker background for table headers */
             color: #ffffff;
         }
+        /* Style for advertisement placeholders */
+        .ad-placeholder {
+            background-color: #333; /* Dark gray for ad areas */
+            border: 1px dashed #555; /* Dashed border to indicate placeholder */
+            color: #ccc;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-style: italic;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
@@ -142,8 +158,18 @@
             <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">{{ post.title }}</h1>
             <p class="text-gray-400 text-sm mb-8">Published on {{ post.date_posted.strftime('%Y-%m-%d %H:%M') }}</p>
 
+            <!-- Advertisement Placeholder Top -->
+            <div class="ad-placeholder">
+                Advertisement Area (728x90 or similar)
+            </div>
+
             <div class="prose max-w-none"> <!-- Apply prose styling here -->
                 {{ post.content | markdown | safe }} <!-- Apply markdown filter first, then safe -->
+            </div>
+
+            <!-- Advertisement Placeholder Bottom -->
+            <div class="ad-placeholder">
+                Advertisement Area (728x90 or similar)
             </div>
 
             <div class="mt-10 pt-6 border-t border-[#2A2A2A]">

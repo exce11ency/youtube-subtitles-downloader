@@ -1,5 +1,5 @@
 # Import necessary modules from Flask for creating the web application and handling requests.
-from flask import Flask, request, jsonify, render_template, send_file, redirect, url_for, flash
+from flask import Flask, request, jsonify, render_template, send_file, redirect, url_for, flash, abort # Добавлен 'abort'
 # Import YouTubeTranscriptApi for fetching subtitles.
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
 # Import os for reading environment variables.
@@ -247,6 +247,23 @@ def clear_global_proxy_env():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+# NEW: Route to serve ads.txt directly from the root
+@app.route('/ads.txt')
+def serve_ads_txt():
+    # Construct the full path to the ads.txt file
+    # os.getcwd() gets the current working directory, which should be your project root
+    ads_txt_path = os.path.join(os.getcwd(), 'ads.txt')
+    
+    # Check if the file exists
+    if not os.path.exists(ads_txt_path):
+        # If the file doesn't exist, return a 404 error
+        print(f"ads.txt not found at: {ads_txt_path}")
+        abort(404) # Flask's way to return a 404 Not Found
+    
+    # Serve the file directly
+    return send_file(ads_txt_path, mimetype='text/plain')
+
 
 # Route for the main tools page
 @app.route('/tools')

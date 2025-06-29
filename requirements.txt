@@ -10,3 +10,4 @@ markdown==3.8.2
 Flask-Mail==0.9.1
 Flask-Login==0.6.3
 Flask-WTF==1.2.1
+beautifulsoup4==4.12.3 #

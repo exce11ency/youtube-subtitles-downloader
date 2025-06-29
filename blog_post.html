@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} | YT Growth</title> <!-- Dynamic title from Flask -->
-    <meta name="description" content="Explore articles and insights on YouTube tools, subtitles, and content growth from YT Growth.">
+    <title>{{ post.title }} | YT Growth Blog</title> <!-- Dynamic title for individual post -->
+    <meta name="description" content="{{ post.content[:160] }}"> <!-- Dynamic description for SEO -->
 
     <!-- Favicon -->
     <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=YT" type="image/png">
@@ -38,7 +38,6 @@
             background-color: #0f0f0f; /* Deep dark background */
             color: #e0e0e0;
         }
-        /* Style for scrollbar in potential content areas */
         .content-scroll::-webkit-scrollbar {
             width: 8px;
         }
@@ -53,7 +52,6 @@
         .content-scroll::-webkit-scrollbar-thumb:hover {
             background: #6a6a6a;
         }
-
         /* Soft hiding for Google Translate widget */
         #google-translate-wrapper {
             position: absolute;
@@ -63,6 +61,83 @@
             height: 1px;
             overflow: hidden;
             z-index: -1;
+        }
+        /* Prose styling for markdown content */
+        .prose {
+            color: #d1d5db; /* Light gray text */
+            line-height: 1.75;
+            font-size: 1.125rem; /* Base font size */
+        }
+        .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+            color: #ffffff; /* White headings */
+            font-weight: 700;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+        }
+        .prose h1 { font-size: 2.5em; }
+        .prose h2 { font-size: 2em; }
+        .prose h3 { font-size: 1.75em; }
+        .prose strong {
+            color: #ffffff; /* Strong text in white */
+        }
+        .prose p {
+            margin-bottom: 1em;
+        }
+        .prose ul, .prose ol {
+            margin-left: 1.5em;
+            margin-bottom: 1em;
+            list-style-position: outside;
+        }
+        .prose ul li {
+            list-style-type: disc;
+        }
+        .prose ol li {
+            list-style-type: decimal;
+        }
+        .prose a {
+            color: #a78bfa; /* Purple links */
+            text-decoration: underline;
+            transition: color 0.2s ease-in-out;
+        }
+        .prose a:hover {
+            color: #c4b5fd; /* Lighter purple on hover */
+        }
+        .prose code {
+            background-color: #3f3f46; /* Darker gray for inline code */
+            color: #fca5a5; /* Light red for code */
+            padding: 0.2em 0.4em;
+            border-radius: 0.3em;
+            font-size: 0.9em;
+        }
+        .prose pre {
+            background-color: #1f2937; /* Even darker background for code blocks */
+            color: #e5e7eb; /* Light text for code blocks */
+            padding: 1em;
+            border-radius: 0.5em;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        .prose blockquote {
+            border-left: 0.25rem solid #6b7280; /* Gray border for blockquotes */
+            padding-left: 1em;
+            color: #9ca3af; /* Slightly darker gray for blockquote text */
+            font-style: italic;
+        }
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+        .prose th, .prose td {
+            border: 1px solid #374151; /* Dark gray borders for tables */
+            padding: 0.75em;
+            text-align: left;
+        }
+        .prose th {
+            background-color: #1f2937; /* Darker background for table headers */
+            color: #ffffff;
         }
         /* Стили для контейнеров рекламы, чтобы AdSense мог определить размеры (эти стили будут работать даже без AdSense блоков) */
         .adsbygoogle-container {
@@ -93,38 +168,27 @@
 
     <main class="flex-grow py-16 px-4">
         <div class="container mx-auto max-w-4xl bg-[#1A1A1A] p-8 md:p-12 rounded-xl shadow-2xl border border-[#2A2A2A]">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-8 text-center">Our Blog</h1>
-            <p class="text-xl text-gray-400 mb-10 text-center">
-                Insights, tips, and news on YouTube tools, content creation, and subtitle management.
-            </p>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">{{ post.title }}</h1>
+            <p class="text-gray-400 text-sm mb-8">Published on {{ post.date_posted.strftime('%Y-%m-%d %H:%M') }}</p>
 
-            <!-- Advertisement Placeholder Top -->
+            <!-- AdSense Ad Unit 1 - Временно пустой для верификации. Будет добавлен после одобрения сайта. -->
             <div class="adsbygoogle-container">
                  <!-- Ad content will appear here after AdSense approval -->
             </div>
 
-            <div class="space-y-8">
-                {% if posts %}
-                    {% for post in posts %}
-                    <div class="bg-[#2A2A2A] p-6 rounded-lg shadow-md border border-[#3A3A3A] transition duration-200 hover:scale-[1.02] hover:shadow-xl">
-                        <h2 class="text-2xl font-semibold text-white mb-2 leading-tight">
-                            <a href="/blog/{{ post.slug }}" class="hover:text-purple-400 transition duration-200">{{ post.title }}</a>
-                        </h2>
-                        <p class="text-gray-400 text-sm mb-4">Published on {{ post.date_posted.strftime('%B %d, %Y') }}</p> {# Updated date format #}
-                        <p class="text-gray-300 mb-4">{{ post.content | plain_text_summary }}</p> {# Apply new filter #}
-                        <a href="/blog/{{ post.slug }}" class="text-purple-400 hover:text-purple-300 inline-flex items-center text-md font-medium">
-                            Read More &rarr;
-                        </a>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <p class="text-center text-gray-400 text-lg">No blog posts found yet. Check back soon!</p>
-                {% endif %}
+            <div class="prose max-w-none"> {# Apply prose styling here #}
+                {{ post.content | markdown | safe }} {# Apply markdown filter first, then safe #}
             </div>
 
-            <!-- Advertisement Placeholder Bottom -->
+            <!-- AdSense Ad Unit 2 - Временно пустой для верификации. Будет добавлен после одобрения сайта. -->
             <div class="adsbygoogle-container">
                  <!-- Ad content will appear here after AdSense approval -->
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-[#2A2A2A]">
+                <a href="/blog" class="text-purple-400 hover:text-purple-300 inline-flex items-center text-md font-medium">
+                    &larr; Back to Blog
+                </a>
             </div>
         </div>
     </main>

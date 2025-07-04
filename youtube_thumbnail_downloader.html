@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Thumbnail Downloader | YT Growth - High Quality Thumbnails</title>
+    <meta name="description" content="Download high-quality YouTube video thumbnails instantly. Get MaxRes, HD, HQ, MQ, and Default resolution images for free with YT Growth.">
+
+    <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=YT" type="image/png">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQ5W6J1PGB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TQ5W6J1PGB');
+    </script>
+
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: true}, 'google_translate_element');
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1523592243681550"
+      crossorigin="anonymous"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f0f; /* Deep dark background */
+            color: #e0e0e0;
+        }
+        /* Aggressive hiding for Google Translate Element */
+        #google-translate-wrapper,
+        .goog-te-gadget,
+        .goog-te-banner-frame,
+        .goog-tooltip-wrapper,
+        .goog-tooltip,
+        #goog-gt-tt {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
+            position: absolute !important;
+            left: -9999px !important;
+            top: -9999px !important;
+            z-index: -1 !important;
+        }
+        /* Ensure any direct body children from translate are hidden */
+        body > .skiptranslate {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        /* Style for advertisement placeholders */
+        .adsbygoogle-container {
+            width: 100%; /* Full width */
+            min-height: 100px; /* Minimum height for placeholder */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            background-color: #333; /* Dark gray background */
+            border: 1px dashed #555; /* Dashed border */
+            color: #ccc;
+            text-align: center;
+            font-size: 1.1em;
+            font-style: italic;
+            border-radius: 8px;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 5px;
+            position: relative;
+        }
+        /* Thumbnail display specific styles for dark theme */
+        .thumbnail-display img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Darker shadow */
+            border: 1px solid #3A3A3A; /* Border to match dark theme containers */
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-[#0F0F0F] text-gray-100 antialiased">
+    {% include 'header.html' %} 
+
+    <main class="flex-grow flex items-center justify-center py-16 px-4">
+        <div class="w-full max-w-4xl bg-[#1A1A1A] p-8 md:p-12 rounded-xl shadow-2xl border border-[#2A2A2A]">
+            <div class="text-center mb-10">
+                <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+                    YouTube Thumbnail Downloader
+                </h1>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Enter a YouTube video URL to quickly grab its thumbnail in various resolutions.
+                </p>
+            </div>
+
+            <div class="bg-[#2A2A2A] p-6 rounded-lg shadow-inner border border-[#3A3A3A] mb-8">
+                <label for="videoUrlInput" class="block text-base font-medium text-gray-300 mb-3">
+                    Enter YouTube Video URL:
+                </label>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input
+                        type="text"
+                        id="videoUrlInput"
+                        placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                        class="flex-grow px-5 py-3 bg-[#1A1A1A] border border-[#3A3A3A] rounded-md text-gray-100 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200 text-base"
+                    />
+                    <button
+                        id="getThumbnailBtn"
+                        class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-md shadow-lg hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 focus:ring-offset-[#2A2A2A] transition duration-200 transform hover:scale-105 flex-shrink-0"
+                    >
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Get Thumbnail
+                    </button>
+                </div>
+            </div>
+
+            <div class="adsbygoogle-container"></div>
+
+            <div id="loadingIndicator" class="text-center text-purple-400 font-medium text-lg hidden mb-6">
+                Fetching thumbnail...
+            </div>
+
+            <div id="errorMessage" class="hidden mt-6 p-4 bg-red-900 border border-red-700 text-red-200 rounded-md relative text-base" role="alert">
+                <strong class="font-bold">Error:</strong>
+                <span class="block sm:inline" id="errorText"></span>
+            </div>
+
+            <div id="thumbnailResult" class="hidden mt-8 pt-6 border-t border-[#2A2A2A]">
+                <h2 class="text-2xl font-semibold text-white mb-5 text-center">Thumbnail Preview</h2>
+                <div class="thumbnail-display flex justify-center mb-6">
+                    <img id="youtubeThumbnail" src="" alt="YouTube Video Thumbnail" class="border border-gray-200" />
+                </div>
+
+                <h3 class="text-xl font-semibold text-white mb-4 text-center">Download Options</h3>
+                <div id="downloadLinks" class="flex flex-wrap justify-center gap-4">
+                    </div>
+                <p id="noThumbnailsMessage" class="text-center text-gray-400 mt-4 hidden">
+                    No high-resolution thumbnails found for this video.
+                </p>
+            </div>
+
+            <div class="mt-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300 adsbygoogle-container"></div>
+        </div>
+    </main>
+
+    <div class="container mx-auto max-w-4xl px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-6 h-48 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300 flex items-center justify-center text-center text-xl adsbygoogle-container"></div>
+            <div class="p-6 h-48 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl text-gray-300 flex items-center justify-center text-center text-xl adsbygoogle-container"></div>
+        </div>
+    </div>
+
+    <section class="py-16 px-4 bg-[#0F0F0F] text-gray-100 border-t border-[#1A1A1A]">
+        <div class="container mx-auto text-left max-w-4xl">
+            <h2 class="text-4xl font-extrabold text-white mb-6">Why Use YT Growth's Thumbnail Downloader?</h2>
+            <p class="text-lg text-gray-400 mb-6">
+                Our **free YouTube thumbnail downloader** from YT Growth allows you to quickly and easily grab high-quality thumbnails from any public YouTube video. Whether you need a stunning image for your blog, social media, or a presentation, our tool provides access to various resolutions including **MaxRes (1920x1080)**, **HD (1280x720)**, **HQ (480x360)**, and more.
+            </p>
+
+            <div class="my-8 p-6 bg-[#2A2A2A] border border-[#3A3A3A] rounded-lg text-center text-base text-gray-300 adsbygoogle-container"></div>
+
+            <h3 class="text-3xl font-semibold text-white mb-4">Perfect for Content Creators & Marketers</h3>
+            <p class="text-gray-400 mb-6">
+                A compelling thumbnail is crucial for attracting viewers. With our tool, you can download the best possible image to use in your marketing materials, video promotions, or to analyze competitor strategies. Get the exact thumbnail you need without hassle, enhancing your content's visual appeal and click-through rates.
+            </p>
+
+            <h3 class="text-3xl font-semibold text-white mb-4">Simple, Fast, and Reliable</h3>
+            <p class="text-gray-400 mb-6">
+                We've designed our platform to be incredibly user-friendly. Just paste the YouTube video URL, click "Get Thumbnail," and you'll instantly see a preview and download links for all available resolutions. Our service ensures you get accurate and high-quality images quickly, every time.
+            </p>
+
+            <h2 class="text-4xl font-extrabold text-white mb-6 mt-10">Frequently Asked Questions (FAQ)</h2>
+            <div class="space-y-4 text-gray-400">
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Q: Is this YouTube thumbnail downloader free to use?</h3>
+                    <p>A: Yes, our YouTube thumbnail downloading service is completely free. You can download as many thumbnails as you need without any hidden costs.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Q: What resolutions are available for download?</h3>
+                    <p>A: We support various resolutions including MaxRes (1920x1080), HD (1280x720), HQ (480x360), MQ (320x180), and Default (120x90). The availability of higher resolutions like MaxRes depends on the original video upload.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Q: Can I download thumbnails from any YouTube video?</h3>
+                    <p>A: Yes, you can download thumbnails from any public YouTube video. Our tool extracts the official thumbnail images provided by YouTube.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Q: How can I use these downloaded thumbnails?</h3>
+                    <p>A: Downloaded thumbnails can be used for various purposes like creating blog post images, social media promotions, presentations, video analysis, or simply for your personal collection. Always respect copyright laws when using others' content.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mx-auto max-w-4xl px-4 py-8 text-center">
+        <div class="adsbygoogle-container"></div>
+    </div>
+
+    {% include 'footer.html' %} 
+
+    <script>
+        const videoUrlInput = document.getElementById('videoUrlInput');
+        const getThumbnailBtn = document.getElementById('getThumbnailBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const errorTextSpan = document.getElementById('errorText');
+        const thumbnailResult = document.getElementById('thumbnailResult');
+        const youtubeThumbnail = document.getElementById('youtubeThumbnail');
+        const downloadLinks = document.getElementById('downloadLinks');
+        const noThumbnailsMessage = document.getElementById('noThumbnailsMessage');
+
+        // Function to display error message
+        function showErrorMessage(message) {
+            errorTextSpan.textContent = message;
+            errorMessageDiv.classList.remove('hidden');
+        }
+
+        // Function to hide error message
+        function hideErrorMessage() {
+            errorMessageDiv.classList.add('hidden');
+            errorTextSpan.textContent = '';
+        }
+
+        // Function to extract video ID from various YouTube URL formats
+        function getVideoId(url) {
+            const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        // Function to get YouTube thumbnail URLs (direct CDN links)
+        function getThumbnailUrls(videoId) {
+            // YouTube provides several default thumbnail qualities
+            // Note: The '4' and '1' in the paths are placeholders and might vary or not be strictly necessary,
+            // but the core structure with videoId and resolution is what matters.
+            // Using googleusercontent.com/youtube.com/ is the correct proxy format for Flask.
+            return {
+                maxresdefault: `http://img.youtube.com/vi/${videoId}/maxresdefault.jpg`, // 1920x1080 (if available)
+                sddefault: `http://img.youtube.com/vi/${videoId}/sddefault.jpg`, // 640x480
+                hqdefault: `http://img.youtube.com/vi/${videoId}/hqdefault.jpg`, // 480x360
+                mqdefault: `http://img.youtube.com/vi/${videoId}/mqdefault.jpg`, // 320x180
+                default: `http://img.youtube.com/vi/${videoId}/default.jpg` // 120x90 (always exists)
+            };
+        }
+
+        getThumbnailBtn.addEventListener('click', async () => { // Made async to use await for image loading
+            const videoUrl = videoUrlInput.value.trim();
+            const videoId = getVideoId(videoUrl);
+
+            // Reset previous states
+            hideErrorMessage();
+            thumbnailResult.classList.add('hidden');
+            loadingIndicator.classList.remove('hidden');
+            youtubeThumbnail.src = '';
+            downloadLinks.innerHTML = '';
+            noThumbnailsMessage.classList.add('hidden');
+
+            if (!videoId) {
+                showErrorMessage('Please enter a valid YouTube video URL.');
+                loadingIndicator.classList.add('hidden');
+                return;
+            }
+
+            loadingIndicator.classList.remove('hidden');
+
+            const thumbnailUrls = getThumbnailUrls(videoId);
+            const resolutionsToTry = ['maxresdefault', 'sddefault', 'hqdefault', 'mqdefault', 'default']; // Order of preference
+
+            let previewImageFound = false;
+            for (const res of resolutionsToTry) {
+                const img = new Image();
+                img.src = thumbnailUrls[res];
+                
+                // Wait for the image to load or error
+                await new Promise(resolve => {
+                    img.onload = () => {
+                        youtubeThumbnail.src = img.src;
+                        previewImageFound = true;
+                        resolve();
+                    };
+                    img.onerror = () => {
+                        // If this specific resolution fails, try the next one
+                        resolve();
+                    };
+                });
+
+                if (previewImageFound) {
+                    break; // Stop if a working preview image is found
+                }
+            }
+
+            loadingIndicator.classList.add('hidden');
+
+            if (previewImageFound) {
+                thumbnailResult.classList.remove('hidden');
+            } else {
+                showErrorMessage('Could not load any preview thumbnail for this video.');
+                return; // Stop if no preview could be loaded
+            }
+            
+            // Populate download links (these will now use your Flask backend, which handles fallbacks)
+            const downloadResolutions = {
+                'MaxRes (1920x1080)': 'maxresdefault',
+                'HD (1280x720)': 'sddefault',
+                'HQ (480x360)': 'hqdefault',
+                'MQ (320x180)': 'mqdefault',
+                'Default (120x90)': 'default'
+            };
+
+            let hasDownloadableThumbnails = false;
+            for (const [name, key] of Object.entries(downloadResolutions)) {
+                const link = document.createElement('a');
+                // Link directly to your Flask API endpoint for download
+                link.href = `/api/download_thumbnail?videoId=${videoId}&resolution=${key}`;
+                link.download = `${videoId}_${key}.jpg`; // Suggested filename
+                link.className = 'px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-md shadow-lg hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 focus:ring-offset-[#2A2A2A] transition duration-200 transform hover:scale-105 text-sm';
+                link.textContent = name;
+                downloadLinks.appendChild(link);
+                hasDownloadableThumbnails = true; // Assume at least default exists
+            }
+
+            if (!hasDownloadableThumbnails) {
+                noThumbnailsMessage.classList.remove('hidden');
+            } else {
+                noThumbnailsMessage.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

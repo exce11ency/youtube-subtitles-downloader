@@ -1,14 +1,12 @@
 <header class="w-full bg-[#1A1A1A] py-3 px-6 border-b border-[#2A2A2A] shadow-md relative z-10">
     <div class="container mx-auto flex items-center justify-between">
         <a href="/" class="flex items-center space-x-2">
-            <!-- Простой текстовый логотип -->
             <span class="text-2xl font-bold text-white">YT Growth</span>
         </a>
 
-        <!-- Основная навигация для десктопа -->
         <nav class="hidden md:flex items-center space-x-6 text-gray-400 font-medium">
-            <a href="/blog" class="hover:text-white transition duration-200">Blog</a>
             <a href="/tools" class="hover:text-white transition duration-200">Tools</a>
+            <a href="/blog" class="hover:text-white transition duration-200">Blog</a>
             <a href="/pricing" class="hover:text-white transition duration-200">Pricing</a>
             <a href="/faq" class="hover:text-white transition duration-200">FAQ</a>
             <a href="/contact" class="hover:text-white transition duration-200">Contact</a>
@@ -17,7 +15,6 @@
             </a>
         </nav>
 
-        <!-- Гамбургер-меню для мобильных -->
         <div class="md:hidden flex items-center">
             <button id="mobileMenuButton" class="text-gray-400 hover:text-white focus:outline-none">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -27,8 +24,6 @@
             </button>
         </div>
 
-        <!-- Обертка для Google Translate Element (расположение остается здесь для совместимости) -->
-        <!-- Агрессивное скрытие для Google Translate Element, если он все равно появляется -->
         <style>
             #google-translate-wrapper {
                 position: absolute;
@@ -57,7 +52,6 @@
         </div>
     </div>
 
-    <!-- Мобильное меню (скрыто по умолчанию) -->
     <nav id="mobileMenu" class="md:hidden absolute top-full left-0 w-full bg-[#1A1A1A] border-t border-[#2A2A2A] shadow-lg py-4 hidden">
         <div class="flex flex-col items-center space-y-4 text-gray-400 font-medium">
             <a href="/blog" class="hover:text-white transition duration-200 w-full text-center py-2">Blog</a>
@@ -70,11 +64,6 @@
             </a>
         </div>
     </nav>
-
-    <!-- Баннер активной разработки -->
-    <div class="w-full bg-yellow-600 text-white text-center py-2 text-sm font-semibold mt-2 rounded-md">
-        This site is currently in active development. Thank you for your patience!
-    </div>
 </header>
 
 <script>
